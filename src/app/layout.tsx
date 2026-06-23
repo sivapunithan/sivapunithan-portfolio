@@ -63,6 +63,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: siteTitle,
   description: siteConfig.description,
+  verification: {
+    google: "Kd8zYLbOEBvulJNb744cF43jZdC4AxNgioeAJxRvp8Y",
+  },
   openGraph: {
     title: siteTitle,
     description: siteConfig.description,
