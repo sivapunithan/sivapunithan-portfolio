@@ -1,26 +1,159 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   IDEA NOIR — visual tokens
+   IntelliJ-inspired dark workspace surfaces, thin borders, restrained
+   syntax-colour accents. Accents are used like syntax highlighting:
+   one keyword, one divider, one index, one status word, one underline.
+   ========================================================================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #1e1f22;
+  --background-deep: #17181a;
+  --surface: #252629;
+  --surface-raised: #2b2d30;
+  --surface-hover: #313338;
+
+  --border: rgba(255, 255, 255, 0.09);
+  --border-subtle: rgba(255, 255, 255, 0.055);
+
+  --text-primary: #dfe1e5;
+  --text-secondary: #bcbec4;
+  --text-muted: #7a7e85;
+
+  --accent-blue: #6ea8fe;
+  --accent-green: #6aab73;
+  --accent-orange: #cf8e6d;
+  --accent-yellow: #d5b778;
+  --accent-lavender: #b3aeff;
+
+  --container: 1440px;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background-deep: var(--background-deep);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-hover: var(--surface-hover);
+
+  --color-edge: var(--border);
+  --color-edge-subtle: var(--border-subtle);
+
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-green: var(--accent-green);
+  --color-accent-orange: var(--accent-orange);
+  --color-accent-yellow: var(--accent-yellow);
+  --color-accent-lavender: var(--accent-lavender);
+
+  --container-content: var(--container);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Font roles. The underlying CSS variables (--font-display, --font-body,
+   --font-mono) are set by next/font in src/app/layout.tsx. */
+@utility font-display {
+  font-family: var(--font-display);
+}
+@utility font-body {
+  font-family: var(--font-body);
+}
+@utility font-mono {
+  font-family: var(--font-mono);
+}
+
+html {
+  /* Keep anchor targets clear of the sticky workspace header. */
+  scroll-padding-top: 6.5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Very subtle top-radial glow — almost invisible, adds depth to dark bg. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 70% 35% at 50% -5%,
+    rgba(110, 168, 254, 0.028) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Blinking block cursor for boot screen and terminal block. */
+@keyframes ide-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+::selection {
+  background: rgba(110, 168, 254, 0.28);
+  color: var(--text-primary);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* Skip-to-content link: visually hidden until focused. */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100%;
+  z-index: 100;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.skip-link:focus-visible {
+  top: 1rem;
+}
+
+/* Animated underline for text links — pure CSS, no client JS. */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 220ms ease;
+}
+.link-underline:hover,
+.link-underline:focus-visible {
+  background-size: 100% 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link-underline {
+    transition: none;
+  }
+}
+
+/* Custom cursor: hides native cursor only after JS component mounts on body. */
+body.custom-cursor-active * {
+  cursor: none !important;
 }

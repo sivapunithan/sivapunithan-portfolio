@@ -1,0 +1,16 @@
+import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
+
+interface ContainerProps {
+  children: ReactNode;
+  className?: string;
+}
+
+/** Central content column. max-w-content maps to --container (1440px). */
+export function Container({ children, className }: ContainerProps) {
+  return (
+    <div className={cn("mx-auto w-full max-w-content px-5 sm:px-8 lg:px-12", className)}>
+      {children}
+    </div>
+  );
+}
