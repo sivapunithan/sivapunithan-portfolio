@@ -6,10 +6,11 @@ import { HeroSection } from "@/components/sections/hero-section";
 import { IntroductionSection } from "@/components/sections/introduction-section";
 import { ProjectsSection } from "@/components/sections/projects-section";
 import { StackSection } from "@/components/sections/stack-section";
+import { PageShell } from "@/components/motion/page-shell";
 
 export default function Home() {
   return (
-    <main id="main">
+    <PageShell>
       <HeroSection />
       <IntroductionSection />
       <ProjectsSection />
@@ -18,6 +19,6 @@ export default function Home() {
       <EducationSection />
       <CurrentFocusSection />
       <ContactSection />
-    </main>
+    </PageShell>
   );
 }

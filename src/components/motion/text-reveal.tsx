@@ -2,6 +2,7 @@
 
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { useRef, type ReactNode } from "react";
+import { useRevealFallback } from "@/components/motion/use-reveal-fallback";
 import { cn } from "@/lib/utils";
 
 interface TextRevealProps {
@@ -23,6 +24,7 @@ export function TextReveal({ children, className, delay = 0 }: TextRevealProps) 
   const wrapperRef = useRef<HTMLSpanElement>(null);
   const isInView = useInView(wrapperRef, { once: true });
   const shouldReduceMotion = useReducedMotion();
+  const shouldReveal = useRevealFallback();
 
   if (shouldReduceMotion) {
     return <span className={cn("block", className)}>{children}</span>;
@@ -33,7 +35,7 @@ export function TextReveal({ children, className, delay = 0 }: TextRevealProps) 
       <motion.span
         className="block"
         initial={{ y: "110%" }}
-        animate={isInView ? { y: "0%" } : undefined}
+        animate={isInView || shouldReveal ? { y: "0%" } : undefined}
         transition={{ duration: 0.7, delay, ease: EASE }}
       >
         {children}

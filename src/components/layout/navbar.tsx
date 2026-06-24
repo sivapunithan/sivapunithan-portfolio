@@ -30,23 +30,29 @@ export function Navbar() {
               <li
                 key={item.href}
                 className={cn(
-                  "flex items-stretch",
-                  isActive && "border-x border-edge bg-surface-raised",
+                  "flex items-stretch border-x border-transparent transition-colors duration-200",
+                  isActive && "border-edge/60 bg-surface-raised/95 active-tab-glow",
                 )}
               >
                 <a
                   href={item.href}
                   aria-current={isActive ? "true" : undefined}
                   className={cn(
-                    "relative flex items-center px-4 text-sm transition-colors duration-200",
+                    "relative flex items-center px-4 text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-lavender/50",
                     isActive ? "text-primary" : "text-secondary hover:text-primary",
                   )}
                 >
                   {isActive && (
-                    <span
-                      aria-hidden="true"
-                      className="absolute inset-x-0 top-0 h-0.5 bg-accent-blue"
-                    />
+                    <>
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-x-0 top-0 h-0.5 bg-accent-lavender shadow-[0_0_18px_var(--accent-lavender)]"
+                      />
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-x-0 bottom-0 h-px bg-accent-lavender/35"
+                      />
+                    </>
                   )}
                   {item.label}
                 </a>

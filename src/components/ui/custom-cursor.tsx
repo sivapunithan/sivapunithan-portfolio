@@ -8,12 +8,12 @@ import { useEffect, useRef, useState } from "react";
  *
  * Three modes:
  *   default     — 14px outlined square with faint blue fill
- *   interactive — 20px square, brighter border, soft glow
+ *   interactive — 20px square, brighter border
  *   text        — 2px × 18px vertical blue caret (I-beam)
  *
  * Position: driven by requestAnimationFrame, written directly to
  * style.transform — zero lag, no CSS transition on movement.
- * Shape: transitions via CSS transition on size/radius/shadow only.
+ * Shape: transitions via CSS transition on size/radius/background only.
  *
  * Trail: separate element lerped toward mouse at 0.15 factor.
  */
@@ -29,24 +29,24 @@ const SHAPE: Record<CursorMode, React.CSSProperties> = {
     width: 14,
     height: 14,
     borderRadius: 2,
-    border: "1.5px solid #6ea8fe",
-    background: "rgba(110, 168, 254, 0.07)",
+    border: "1.5px solid var(--accent-blue)",
+    background: "color-mix(in srgb, var(--accent-blue) 10%, transparent)",
     boxShadow: "none",
   },
   interactive: {
     width: 20,
     height: 20,
     borderRadius: 3,
-    border: "1.5px solid #6ea8fe",
-    background: "rgba(110, 168, 254, 0.11)",
-    boxShadow: "0 0 10px rgba(110, 168, 254, 0.18)",
+    border: "1.5px solid var(--accent-blue)",
+    background: "color-mix(in srgb, var(--accent-blue) 16%, transparent)",
+    boxShadow: "none",
   },
   text: {
     width: 2,
     height: 18,
     borderRadius: 1,
     border: "none",
-    background: "#6ea8fe",
+    background: "var(--accent-blue)",
     boxShadow: "none",
   },
 };
@@ -61,7 +61,7 @@ export function CustomCursor() {
     if (!window.matchMedia("(pointer: fine)").matches) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    setMounted(true);
+    const mountTimer = setTimeout(() => setMounted(true), 0);
     document.body.classList.add("custom-cursor-active");
 
     const mouse = { x: -200, y: -200 };
@@ -107,6 +107,7 @@ export function CustomCursor() {
 
     return () => {
       cancelAnimationFrame(rafId);
+      clearTimeout(mountTimer);
       document.body.classList.remove("custom-cursor-active");
       window.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseover", onOver);
@@ -131,7 +132,7 @@ export function CustomCursor() {
           width: 5,
           height: 5,
           borderRadius: "50%",
-          background: "rgba(110, 168, 254, 0.22)",
+          background: "color-mix(in srgb, var(--accent-blue) 24%, transparent)",
           marginLeft: -2.5,
           marginTop: -2.5,
           transform: "translate(-200px, -200px)",
@@ -158,7 +159,7 @@ export function CustomCursor() {
             position: "absolute",
             transform: "translate(-50%, -50%)",
             transition:
-              "width 130ms ease, height 130ms ease, border-radius 130ms ease, box-shadow 130ms ease, background 130ms ease",
+              "width 130ms ease, height 130ms ease, border-radius 130ms ease, background 130ms ease",
             ...SHAPE[mode],
           }}
         />

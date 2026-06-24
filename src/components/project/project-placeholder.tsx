@@ -51,7 +51,7 @@ export function ProjectPlaceholder({ index, title, accent }: ProjectPlaceholderP
   return (
     <div
       aria-hidden="true"
-      className="relative flex aspect-[16/10] flex-col overflow-hidden border border-edge bg-background-deep transition-[border-color,box-shadow] duration-300 group-hover:border-accent-blue/20 group-hover:[box-shadow:0_0_20px_rgba(110,168,254,0.07)]"
+      className="relative flex aspect-[16/10] flex-col overflow-hidden border border-edge bg-background-deep transition-colors duration-300 group-hover:border-accent-lavender/35 group-hover:bg-surface"
     >
       {/* Pseudo-file breadcrumb */}
       <div className="flex h-8 shrink-0 items-center border-b border-edge-subtle px-4">

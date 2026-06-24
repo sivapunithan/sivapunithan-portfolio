@@ -26,10 +26,9 @@ import type {
 
 export const siteConfig: SiteConfig = {
   name: "Sivapunithan S",
-  brandMark: "SS",
+  brandMark: "SP",
   role: "Java Developer · Spring Boot · Full-Stack",
-  description:
-    "Java developer building reliable enterprise systems with Spring Boot, Oracle SQL, Spring Security, and Next.js.",
+  description: "Java, Spring Boot, SQL, and backend-focused full-stack developer portfolio.",
   domain: "sivapunithan.in",
   workspaceBreadcrumb: ["portfolio", "sivapunithan-s", "java-developer"],
   availability: "OPEN TO OPPORTUNITIES",

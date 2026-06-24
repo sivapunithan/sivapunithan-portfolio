@@ -10,7 +10,7 @@ interface SectionLabelProps {
 export function SectionLabel({ index, label, className }: SectionLabelProps) {
   return (
     <p className={cn("font-mono text-xs tracking-[0.18em] text-muted", className)}>
-      <span className="text-secondary">{index}</span>
+      <span className="text-accent-lavender">{index}</span>
       <span aria-hidden="true"> / </span>
       {label}
     </p>

@@ -17,11 +17,14 @@ export function WorkspaceGutter() {
       className="fixed top-[5.75rem] bottom-7 left-0 z-40 hidden w-16 flex-col items-center border-r border-edge-subtle lg:flex"
     >
       {/* Panel header — mirrors IntelliJ project-panel title strip */}
-      <div className="flex h-9 w-full shrink-0 items-center justify-center border-b border-edge-subtle">
+      <div className="flex h-9 w-full shrink-0 items-center justify-between border-b border-edge-subtle px-2">
         <span
           aria-hidden="true"
-          className="font-mono text-[9px] tracking-[0.18em] text-muted/50 uppercase select-none"
+          className="inline-flex h-4 w-4 items-center justify-center rounded-[0.25rem] border border-accent-lavender/60 bg-background-deep text-[6px] font-semibold tracking-[0.04em] text-primary shadow-[0_0_10px_color-mix(in_srgb,var(--accent-lavender)_16%,transparent)]"
         >
+          SP
+        </span>
+        <span className="font-mono text-[9px] tracking-[0.18em] text-muted/50 uppercase select-none">
           FILES
         </span>
       </div>
@@ -41,7 +44,7 @@ export function WorkspaceGutter() {
                   isActive ? "text-primary" : "text-muted hover:text-secondary",
                 )}
               >
-                <span className={cn(isActive && "text-accent-blue")}>
+                <span className={cn(isActive && "text-accent-lavender")}>
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span className="mt-2 inline-block">{section.label}</span>

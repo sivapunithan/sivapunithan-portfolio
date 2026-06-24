@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
+import { useRevealFallback } from "@/components/motion/use-reveal-fallback";
 
 type MaskDirection = "left" | "up";
 
@@ -26,6 +27,7 @@ const HIDDEN_CLIP: Record<MaskDirection, string> = {
  */
 export function MaskReveal({ children, className, delay = 0, direction = "up" }: MaskRevealProps) {
   const shouldReduceMotion = useReducedMotion();
+  const shouldReveal = useRevealFallback();
 
   if (shouldReduceMotion) {
     return <div className={className}>{children}</div>;
@@ -35,6 +37,7 @@ export function MaskReveal({ children, className, delay = 0, direction = "up" }:
     <motion.div
       className={className}
       initial={{ clipPath: HIDDEN_CLIP[direction] }}
+      animate={shouldReveal ? { clipPath: "inset(0 0 0 0)" } : undefined}
       whileInView={{ clipPath: "inset(0 0 0 0)" }}
       viewport={{ once: true, margin: "-10% 0px" }}
       transition={{ duration: 0.75, delay, ease: EASE }}

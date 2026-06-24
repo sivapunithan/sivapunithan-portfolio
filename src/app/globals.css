@@ -8,24 +8,25 @@
    ========================================================================== */
 
 :root {
-  --background: #1e1f22;
-  --background-deep: #17181a;
-  --surface: #252629;
-  --surface-raised: #2b2d30;
-  --surface-hover: #313338;
+  --background: #080812;
+  --background-deep: #050510;
+  --surface: #0b0b14;
+  --surface-raised: #121225;
+  --surface-hover: #1a1730;
 
-  --border: rgba(255, 255, 255, 0.09);
-  --border-subtle: rgba(255, 255, 255, 0.055);
+  --border: rgba(255, 255, 255, 0.14);
+  --border-subtle: rgba(255, 255, 255, 0.075);
 
-  --text-primary: #dfe1e5;
-  --text-secondary: #bcbec4;
-  --text-muted: #7a7e85;
+  --text-primary: #fff7fd;
+  --text-secondary: #d8d2e8;
+  --text-muted: #8f8aa8;
 
-  --accent-blue: #6ea8fe;
-  --accent-green: #6aab73;
-  --accent-orange: #cf8e6d;
-  --accent-yellow: #d5b778;
-  --accent-lavender: #b3aeff;
+  --accent-blue: #35d8ff;
+  --accent-green: #5cf2a6;
+  --accent-orange: #ff9d5c;
+  --accent-yellow: #fff06a;
+  --accent-lavender: #ff2bd6;
+  --accent-purple: #9b5cff;
 
   --container: 1440px;
 }
@@ -49,6 +50,7 @@
   --color-accent-orange: var(--accent-orange);
   --color-accent-yellow: var(--accent-yellow);
   --color-accent-lavender: var(--accent-lavender);
+  --color-accent-purple: var(--accent-purple);
 
   --container-content: var(--container);
 }
@@ -84,33 +86,333 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Very subtle top-radial glow — almost invisible, adds depth to dark bg. */
+/* Subtle editor-focus wash: keeps depth without turning accents into panels. */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   background: radial-gradient(
     ellipse 70% 35% at 50% -5%,
-    rgba(110, 168, 254, 0.028) 0%,
+    color-mix(in srgb, var(--accent-lavender) 16%, transparent) 0%,
     transparent 65%
   );
   pointer-events: none;
   z-index: 0;
 }
 
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 43, 214, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 43, 214, 0.03) 1px, transparent 1px);
+  background-size: 88px 88px;
+  opacity: 0.18;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 0;
+}
+
 /* Blinking block cursor for boot screen and terminal block. */
 @keyframes ide-blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes neon-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -12px, 0);
+  }
+}
+
+@keyframes scanline-shift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 16px;
+  }
+}
+
+.neon-text {
+  color: var(--accent-lavender);
+  text-shadow:
+    0 0 10px color-mix(in srgb, var(--accent-lavender) 48%, transparent),
+    0 0 22px color-mix(in srgb, var(--accent-lavender) 24%, transparent);
+}
+
+.neon-border {
+  border-color: color-mix(in srgb, var(--accent-lavender) 42%, var(--border));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent-lavender) 14%, transparent),
+    0 18px 44px color-mix(in srgb, var(--accent-lavender) 10%, transparent);
+}
+
+.active-tab-glow {
+  box-shadow: inset 0 1px 0 var(--accent-lavender);
+}
+
+.terminal-surface {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--surface-raised) 92%, transparent),
+    color-mix(in srgb, var(--background-deep) 96%, transparent)
+  );
+  border: 1px solid color-mix(in srgb, var(--accent-lavender) 24%, var(--border));
+}
+
+.cliShell {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 1.15rem;
+  border: 1px solid color-mix(in srgb, var(--accent-lavender) 18%, var(--border));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--surface-raised) 88%, transparent),
+    color-mix(in srgb, var(--background-deep) 96%, transparent)
+  );
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent-lavender) 7%, transparent),
+    0 18px 44px color-mix(in srgb, var(--accent-lavender) 8%, transparent);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.cliShell:focus-within {
+  border-color: color-mix(in srgb, var(--accent-lavender) 34%, var(--border));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent-lavender) 16%, transparent),
+    0 0 24px color-mix(in srgb, var(--accent-lavender) 12%, transparent),
+    0 18px 44px color-mix(in srgb, var(--accent-lavender) 8%, transparent);
+}
+
+.cliShellHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0.65rem 0.95rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cliShellHeaderSlot {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cliShellHeaderMid {
+  justify-self: center;
+  color: color-mix(in srgb, var(--text-secondary) 80%, var(--text-muted));
+}
+
+.cliShellHeaderRight {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text-secondary);
+}
+
+.cliShellDot {
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 999px;
+  background: var(--accent-green);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent-green) 68%, transparent);
+}
+
+.cliShellBody {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.cliLog {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 0.85rem;
+  overflow-y: auto;
+}
+
+.cliShellLine {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.7;
+}
+
+.cliShellLine--system {
+  color: var(--text-secondary);
+}
+
+.cliShellLine--input {
+  color: var(--text-primary);
+}
+
+.cliShellLine--output {
+  color: var(--text-primary);
+}
+
+.cliShellLine--error {
+  color: var(--accent-orange);
+}
+
+.cliHint {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  line-height: 1.6;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.cliHintAction {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  transition: color 180ms ease;
+}
+
+.cliHintAction:hover,
+.cliHintAction:focus-visible {
+  color: var(--accent-lavender);
+  outline: none;
+}
+
+.cliInputRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-top: 1px solid var(--border-subtle);
+  padding: 0.72rem 1rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.cliPrompt {
+  flex: 0 0 auto;
+  color: var(--accent-lavender);
+}
+
+.cliInput {
+  min-width: 0;
+  flex: 1 1 auto;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  line-height: inherit;
+  color: var(--text-primary);
+  caret-color: var(--accent-lavender);
+}
+
+.cliInput::placeholder {
+  color: var(--text-muted);
+}
+
+.cliInput:focus {
+  outline: none;
+}
+
+.cliInput:focus-visible {
+  outline: none;
+}
+
+.cliCursor {
+  width: 0.48rem;
+  height: 1rem;
+  border-right: 1px solid var(--accent-lavender);
+  animation: ide-blink 1.05s steps(1) infinite;
+  opacity: 0.9;
+}
+
+.cliStatus {
+  border-top: 1px solid var(--border-subtle);
+  padding: 0.5rem 1rem 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-transform: lowercase;
+}
+
+.scanline-overlay {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanline-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    transparent 0,
+    transparent 13px,
+    color-mix(in srgb, var(--accent-lavender) 8%, transparent) 14px,
+    transparent 16px
+  );
+  background-size: 100% 16px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scanline-overlay::after {
+    animation: scanline-shift 6s linear infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neon-text {
+    text-shadow: none;
+  }
+
+  .cliShell,
+  .cliHintAction,
+  .cliCursor {
+    transition: none;
+    animation: none;
+  }
 }
 
 ::selection {
-  background: rgba(110, 168, 254, 0.28);
+  background: color-mix(in srgb, var(--accent-lavender) 36%, transparent);
   color: var(--text-primary);
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent-blue);
+  outline: 2px solid var(--accent-lavender);
   outline-offset: 3px;
   border-radius: 1px;
 }

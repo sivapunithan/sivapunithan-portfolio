@@ -1,6 +1,7 @@
 import { experience } from "@/data/portfolio";
 import { SectionReveal } from "@/components/motion/section-reveal";
 import { Container } from "@/components/ui/container";
+import { CodeCommentLabel } from "@/components/ui/code-comment-label";
 import { Divider } from "@/components/ui/divider";
 import { SectionLabel } from "@/components/ui/section-label";
 
@@ -11,6 +12,7 @@ export function ExperienceSection() {
       <Container className="py-20 md:py-28">
         <SectionReveal className="mb-12 space-y-5 md:mb-16">
           <SectionLabel index="04" label="EXPERIENCE" />
+          <CodeCommentLabel>{"// experience loaded"}</CodeCommentLabel>
           <h2 className="font-display text-3xl font-semibold tracking-tight text-primary md:text-4xl">
             Experience
           </h2>

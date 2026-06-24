@@ -23,7 +23,7 @@ export function StatusBar() {
   const file = SECTION_FILE[activeSection ?? "intro"] ?? "SivapunithanS.java";
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 flex h-7 items-center justify-between border-t border-edge-subtle bg-background-deep px-4 lg:pl-20">
+    <div className="fixed bottom-0 left-0 right-0 z-50 flex h-7 items-center justify-between border-t border-accent-lavender/35 bg-background-deep px-4 lg:pl-20">
       <div className="flex items-center gap-4">
         <span className="flex items-center gap-1.5 font-mono text-[10px] text-muted">
           <span className="text-accent-green" aria-hidden="true">
@@ -39,7 +39,7 @@ export function StatusBar() {
           <AnimatePresence mode="wait">
             <motion.span
               key={file}
-              className="text-accent-orange"
+              className="text-accent-lavender"
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}

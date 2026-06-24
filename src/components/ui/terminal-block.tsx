@@ -13,28 +13,28 @@ function parseLine(line: string): React.ReactNode {
   if (line.startsWith("$ ")) {
     return (
       <>
-        <span style={{ color: "#6ea8fe" }}>$ </span>
-        <span style={{ color: "#dfe1e5" }}>{line.slice(2)}</span>
+        <span style={{ color: "var(--accent-blue)" }}>$ </span>
+        <span style={{ color: "var(--text-primary)" }}>{line.slice(2)}</span>
       </>
     );
   }
   if (line.startsWith("status: ")) {
     return (
       <>
-        <span style={{ color: "#7a7e85" }}>status: </span>
-        <span style={{ color: "#6aab73" }}>{line.slice(8)}</span>
+        <span style={{ color: "var(--text-muted)" }}>status: </span>
+        <span style={{ color: "var(--accent-green)" }}>{line.slice(8)}</span>
       </>
     );
   }
   if (line.startsWith("stack: ")) {
     return (
       <>
-        <span style={{ color: "#7a7e85" }}>stack: </span>
-        <span style={{ color: "#cf8e6d" }}>{line.slice(7)}</span>
+        <span style={{ color: "var(--text-muted)" }}>stack: </span>
+        <span style={{ color: "var(--accent-orange)" }}>{line.slice(7)}</span>
       </>
     );
   }
-  return <span style={{ color: "#bcbec4" }}>{line}</span>;
+  return <span style={{ color: "var(--text-secondary)" }}>{line}</span>;
 }
 
 /**
@@ -47,12 +47,10 @@ export function TerminalBlock({ lines }: TerminalBlockProps) {
   const [visible, setVisible] = useState(0);
   const [started, setStarted] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const visibleLines = shouldReduceMotion ? lines.length : visible;
 
   useEffect(() => {
-    if (shouldReduceMotion) {
-      setVisible(lines.length);
-      return;
-    }
+    if (shouldReduceMotion) return;
 
     const el = ref.current;
     if (!el) return;
@@ -78,7 +76,7 @@ export function TerminalBlock({ lines }: TerminalBlockProps) {
     return () => clearTimeout(t);
   }, [started, visible, lines.length, shouldReduceMotion]);
 
-  const done = visible >= lines.length;
+  const done = visibleLines >= lines.length;
 
   return (
     <div
@@ -96,12 +94,12 @@ export function TerminalBlock({ lines }: TerminalBlockProps) {
       <div
         style={{
           height: 28,
-          borderBottom: "1px solid rgba(255,255,255,0.055)",
+          borderBottom: "1px solid var(--border-subtle)",
           display: "flex",
           alignItems: "center",
           paddingLeft: 12,
           fontSize: 10,
-          color: "#7a7e85",
+          color: "var(--text-muted)",
           letterSpacing: "0.12em",
           textTransform: "uppercase",
         }}
@@ -110,16 +108,16 @@ export function TerminalBlock({ lines }: TerminalBlockProps) {
       </div>
 
       <div style={{ padding: "12px 16px" }}>
-        {lines.slice(0, visible).map((line, i) => (
+        {lines.slice(0, visibleLines).map((line, i) => (
           <div key={i} style={{ minHeight: "1.5em" }}>
             {parseLine(line)}
-            {i === visible - 1 && !done && (
+            {i === visibleLines - 1 && !done && (
               <span
                 style={{
                   display: "inline-block",
                   width: 6,
                   height: 11,
-                  background: "#6ea8fe",
+                  background: "var(--accent-blue)",
                   marginLeft: 2,
                   verticalAlign: "text-bottom",
                   animation: "ide-blink 0.75s step-end infinite",
@@ -128,7 +126,11 @@ export function TerminalBlock({ lines }: TerminalBlockProps) {
             )}
           </div>
         ))}
-        {done && <div style={{ color: "#6aab73", marginTop: 4 }}>✓ debug session complete</div>}
+        {done && (
+          <div style={{ color: "var(--accent-green)", marginTop: 4 }}>
+            ✓ debug session complete
+          </div>
+        )}
       </div>
     </div>
   );

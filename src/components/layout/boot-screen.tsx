@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { useReducedMotion } from "motion/react";
 
 const LINES = [
-  { text: "$ init portfolio", color: "#dfe1e5" },
-  { text: "loading workspace...", color: "#bcbec4" },
-  { text: "indexing projects...", color: "#bcbec4" },
-  { text: "mounting experience...", color: "#bcbec4" },
-  { text: "ready.", color: "#6aab73" },
+  { text: "$ init portfolio", color: "var(--text-primary)" },
+  { text: "loading workspace...", color: "var(--text-secondary)" },
+  { text: "indexing projects...", color: "var(--text-secondary)" },
+  { text: "mounting experience...", color: "var(--text-secondary)" },
+  { text: "ready.", color: "var(--accent-green)" },
 ] as const;
 
 const LINE_MS = 220;
@@ -31,9 +31,9 @@ export function BootScreen() {
     if (shouldReduceMotion) return;
     if (sessionStorage.getItem(SESSION_KEY)) return;
 
-    setShow(true);
-
     const timers: ReturnType<typeof setTimeout>[] = [];
+
+    timers.push(setTimeout(() => setShow(true), 0));
 
     LINES.forEach((_, i) => {
       timers.push(setTimeout(() => setCount(i + 1), i * LINE_MS + 40));
@@ -60,7 +60,7 @@ export function BootScreen() {
         position: "fixed",
         inset: 0,
         zIndex: 99999,
-        background: "#17181a",
+        background: "var(--background-deep)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -86,7 +86,7 @@ export function BootScreen() {
                   display: "inline-block",
                   width: 7,
                   height: 13,
-                  background: "#6ea8fe",
+                  background: "var(--accent-blue)",
                   marginLeft: 3,
                   verticalAlign: "text-bottom",
                   animation: "ide-blink 0.75s step-end infinite",

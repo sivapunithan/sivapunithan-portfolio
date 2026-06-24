@@ -14,7 +14,7 @@ import { gutterSections, siteConfig } from "@/data/portfolio";
 import { getSiteUrl } from "@/lib/utils";
 
 /**
- * FONT SYSTEM — three roles, exposed as CSS variables consumed in globals.css:
+ * FONT SYSTEM - three roles, exposed as CSS variables consumed in globals.css:
  *
  *   --font-display  large hero typography and major section headings
  *   --font-body     paragraphs, buttons, navigation, descriptions, UI labels
@@ -57,18 +57,24 @@ const mono = JetBrains_Mono({
 });
 
 const siteUrl = getSiteUrl(siteConfig.domain);
-const siteTitle = "Sivapunithan S | Java Developer · Spring Boot · Full-Stack";
+const siteTitle = "Sivapunithan S | Java Developer";
+const siteDescription =
+  "Java, Spring Boot, SQL, and backend-focused full-stack developer portfolio.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: siteTitle,
-  description: siteConfig.description,
+  description: siteDescription,
+  icons: {
+    icon: "/icon",
+    apple: "/apple-icon",
+  },
   verification: {
     google: "Kd8zYLbOEBvulJNb744cF43jZdC4AxNgioeAJxRvp8Y",
   },
   openGraph: {
     title: siteTitle,
-    description: siteConfig.description,
+    description: siteDescription,
     url: siteUrl,
     siteName: siteConfig.name,
     type: "website",
@@ -77,7 +83,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: siteTitle,
-    description: siteConfig.description,
+    description: siteDescription,
   },
 };
 

@@ -1,4 +1,5 @@
 import { siteConfig } from "@/data/portfolio";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 
 /**
@@ -11,13 +12,7 @@ export function WorkspaceBar() {
 
   return (
     <div className="flex h-9 items-center justify-between gap-4 border-b border-edge-subtle px-4 sm:px-6 lg:px-8">
-      <a
-        href="#intro"
-        aria-label={`${siteConfig.name} — back to top`}
-        className="font-mono text-xs font-semibold tracking-[0.2em] text-primary transition-colors duration-200 hover:text-accent-blue"
-      >
-        {siteConfig.brandMark}
-      </a>
+      <BrandLogo href="#intro" label={`${siteConfig.name} portfolio home`} showTooltip />
 
       <Breadcrumb
         segments={siteConfig.workspaceBreadcrumb}
