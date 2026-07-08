@@ -6,6 +6,17 @@ import { useActiveSection } from "@/components/layout/active-section-provider";
 import { MobileMenu } from "@/components/layout/mobile-menu";
 import { cn } from "@/lib/utils";
 
+/** Maps nav label → Java filename shown on the active tab indicator */
+const NAV_FILE: Record<string, string> = {
+  About: "About.java",
+  Work: "Projects.java",
+  Stack: "Stack.java",
+  Code: "Controller.java",
+  Experience: "Experience.java",
+  Education: "Education.java",
+  Contact: "Contact.java",
+};
+
 /**
  * Tab-inspired navigation row beneath the workspace bar. Desktop shows
  * text links with an active-tab underline; mobile collapses into a
@@ -54,7 +65,16 @@ export function Navbar() {
                       />
                     </>
                   )}
-                  {item.label}
+                  {/* Java file indicator on active tab */}
+                  {isActive && (
+                    <span
+                      aria-hidden="true"
+                      className="mr-1 inline-flex h-3 w-3 items-center justify-center rounded-[0.18rem] bg-accent-orange/15 text-[7px] font-bold text-accent-orange"
+                    >
+                      J
+                    </span>
+                  )}
+                  {isActive && NAV_FILE[item.label] ? NAV_FILE[item.label] : item.label}
                 </a>
               </li>
             );

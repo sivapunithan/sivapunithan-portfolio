@@ -88,13 +88,26 @@ export interface StackGroup {
   items: string[];
 }
 
+export interface ExperienceModule {
+  title: string;
+  description: string;
+  stack: string[];
+  codeFile?: string;
+  codeSnippet?: readonly string[];
+}
+
 export interface ExperienceEntry {
   role: string;
   /** May be a placeholder: [ADD COMPANY NAME] */
   company: string;
-  period: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  /** Project / platform the role centers on */
+  title: string;
   summary: string;
-  highlights: string[];
+  techTags: string[];
+  modules: ExperienceModule[];
 }
 
 export interface EducationEntry {

@@ -1,6 +1,7 @@
 import { contactConfig, siteConfig, socialLinks } from "@/data/portfolio";
 import { SectionReveal } from "@/components/motion/section-reveal";
 import { ApiContactPanel } from "@/components/sections/api-contact-panel";
+import { SpringBootLog } from "@/components/sections/spring-boot-log";
 import { Container } from "@/components/ui/container";
 import { CodeCommentLabel } from "@/components/ui/code-comment-label";
 import { SectionLabel } from "@/components/ui/section-label";
@@ -16,7 +17,7 @@ export function ContactSection() {
     <section id="contact" className="scroll-mt-24">
       <Container className="py-24 md:py-36">
         <SectionReveal className="space-y-5">
-          <SectionLabel index="07" label="CONTACT" />
+          <SectionLabel index="08" label="CONTACT" />
           <CodeCommentLabel>{"// contact endpoint ready"}</CodeCommentLabel>
           <h2 className="max-w-3xl font-display text-4xl leading-[1.08] font-bold tracking-tight text-primary sm:text-5xl md:text-6xl">
             Let&apos;s build something reliable.
@@ -24,7 +25,11 @@ export function ContactSection() {
           <p className="max-w-xl pt-3 leading-relaxed text-secondary">{contactConfig.body}</p>
         </SectionReveal>
 
-        <SectionReveal delay={0.1} className="mt-12">
+        <SectionReveal delay={0.08} className="mt-12">
+          <SpringBootLog />
+        </SectionReveal>
+
+        <SectionReveal delay={0.15} className="mt-0">
           <ApiContactPanel
             emailHref={emailHref}
             resumePath={siteConfig.resumePath}

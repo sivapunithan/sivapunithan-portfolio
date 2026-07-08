@@ -11,23 +11,9 @@ function BrandLogoMark() {
   return (
     <span
       aria-hidden="true"
-      className={cn(
-        "inline-flex h-8 w-8 items-center justify-center rounded-[0.4rem] border border-accent-lavender/70",
-        "bg-[linear-gradient(180deg,var(--surface-raised),var(--background-deep))] text-[11px] font-semibold",
-        "tracking-[0.08em] text-primary shadow-[0_0_0_1px_color-mix(in_srgb,var(--accent-lavender)_20%,transparent),0_0_14px_color-mix(in_srgb,var(--accent-lavender)_18%,transparent)]",
-      )}
+      className="inline-flex h-7 w-7 items-center justify-center rounded-[0.35rem] border border-accent-lavender/40 bg-surface-raised font-mono text-[10px] font-bold tracking-wider text-primary"
     >
-      <span className="relative inline-flex leading-none">
-        <span>SP</span>
-        <span
-          aria-hidden="true"
-          className="absolute -right-2 -top-1 h-1.5 w-1.5 rounded-full bg-accent-orange shadow-[0_0_10px_var(--accent-orange)]"
-        />
-        <span
-          aria-hidden="true"
-          className="absolute -bottom-1 left-0 h-px w-full bg-accent-lavender/60"
-        />
-      </span>
+      SP
     </span>
   );
 }

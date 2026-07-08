@@ -39,6 +39,7 @@ export const navigation: NavItem[] = [
   { label: "About", href: "#about" },
   { label: "Work", href: "#work" },
   { label: "Stack", href: "#stack" },
+  { label: "Code", href: "#code" },
   { label: "Experience", href: "#experience" },
   { label: "Education", href: "#education" },
   { label: "Contact", href: "#contact" },
@@ -48,6 +49,7 @@ export const gutterSections: NavItem[] = [
   { label: "INTRO", href: "#about" },
   { label: "WORK", href: "#work" },
   { label: "STACK", href: "#stack" },
+  { label: "CODE", href: "#code" },
   { label: "EXPERIENCE", href: "#experience" },
   { label: "EDUCATION", href: "#education" },
   { label: "FOCUS", href: "#focus" },
@@ -197,31 +199,113 @@ export const stackGroups: StackGroup[] = [
 
 export const experience: ExperienceEntry[] = [
   {
-    role: "Java Developer",
+    role: "Software Engineer",
     company: "RCS Tech LLP",
-    period: "November 2025 — Present",
+    location: "Bengaluru, Karnataka, India",
+    startDate: "July 2025",
+    endDate: "Present",
+    title: "Enterprise Procurement & Asset Management Platform",
     summary:
-      "Working on an enterprise Procurement and Asset Management System using Spring Boot, Oracle SQL, and Next.js. The role covers backend API development, Spring Security integration, ServiceNow asset sync, and production debugging across a Tomcat and SVN-based business application.",
-    highlights: [
-      "Developing and maintaining backend modules for procurement workflows including purchase request handling and a 3-step approval flow covering requester, approver, and finance stages",
-      "Designed and built REST APIs for GRN creation, purchase orders, AP processing, and payment-request flows",
-      "Implemented Spring Security for role-based access control across procurement and asset management modules",
-      "Integrated the Asset Management module with ServiceNow for automated incident creation, asset record sync, and service request handling",
-      "Wrote and optimised Oracle SQL queries for procurement reports, asset records, and budget validation",
-      "Developed Next.js frontend pages including approval dashboards, procurement forms, and data tables connected to backend APIs",
-      "Debugged production backend issues including API failures, data inconsistencies, and SQL query errors",
+      "Contributing to the development of enterprise business applications using Java, Spring Boot, Oracle SQL, Next.js and TypeScript.",
+    techTags: [
+      "Java",
+      "Spring Boot",
+      "REST APIs",
+      "Oracle SQL",
+      "Next.js",
+      "TypeScript",
+      "Spring Security",
+      "Tomcat",
+      "SVN",
     ],
-  },
-  {
-    role: "Software Developer Intern",
-    company: "RCS Tech LLP",
-    period: "July 2025 — October 2025",
-    summary:
-      "Four-month internship contributing to the same enterprise procurement application under senior developer guidance.",
-    highlights: [
-      "Built REST API endpoints for procurement modules using Spring Boot and Oracle SQL under senior developer guidance",
-      "Assisted with Next.js and React.js frontend tasks connecting UI components to backend services",
-      "Participated in sprint planning, daily standups, and peer code reviews",
+    modules: [
+      {
+        title: "Workflow Engine",
+        description:
+          "Built multi-stage approval workflows with business validations and role-based transitions across requester, approver, and finance stages.",
+        stack: ["Spring Boot", "REST APIs", "Spring Security"],
+        codeFile: "Workflow.java",
+        codeSnippet: [
+          "@Service",
+          "public class WorkflowEngine {",
+          "",
+          "    @Transactional",
+          "    public void transition(PurchaseRequest request, WorkflowEvent event) {",
+          "        WorkflowStage next = stageResolver.resolve(request, event);",
+          "        request.setStage(next);",
+          "",
+          "        if (next == WorkflowStage.FINANCE_REVIEW) {",
+          "            notificationService.notifyFinanceTeam(request);",
+          "        }",
+          "    }",
+          "}",
+        ],
+      },
+      {
+        title: "REST APIs",
+        description:
+          "Designed and built backend APIs powering procurement, GRN, AP processing, and payment-request modules.",
+        stack: ["Spring Boot", "REST APIs", "JPA"],
+        codeFile: "ProcurementController.java",
+        codeSnippet: [
+          "@RestController",
+          "@RequestMapping(\"/api/v1/procurement\")",
+          "public class ProcurementController {",
+          "",
+          "    @PostMapping(\"/grn\")",
+          "    public ResponseEntity<GrnDto> createGrn(",
+          "            @Valid @RequestBody CreateGrnCommand cmd) {",
+          "        return ResponseEntity.ok(grnService.create(cmd));",
+          "    }",
+          "}",
+        ],
+      },
+      {
+        title: "Database",
+        description:
+          "Wrote and optimised Oracle SQL queries used for procurement reporting, validations, and workflow checks.",
+        stack: ["Oracle SQL", "JPA"],
+        codeFile: "OracleQueries.sql",
+        codeSnippet: [
+          "SELECT pr.id, pr.status, d.name AS department,",
+          "       SUM(pi.amount) AS total_amount",
+          "FROM purchase_request pr",
+          "JOIN department d ON d.id = pr.department_id",
+          "JOIN purchase_item pi ON pi.request_id = pr.id",
+          "WHERE pr.created_at >= :startDate",
+          "  AND pr.deleted_at IS NULL",
+          "GROUP BY pr.id, pr.status, d.name",
+          "ORDER BY total_amount DESC;",
+        ],
+      },
+      {
+        title: "Frontend",
+        description:
+          "Developed Next.js pages integrating backend APIs for procurement workflows, including approval dashboards and data tables.",
+        stack: ["Next.js", "TypeScript"],
+        codeFile: "ApprovalDashboard.tsx",
+        codeSnippet: [
+          "export function ApprovalDashboard() {",
+          "  const { data, isLoading } = usePendingApprovals();",
+          "",
+          "  if (isLoading) return <DashboardSkeleton />;",
+          "",
+          "  return (",
+          "    <DataTable",
+          "      rows={data}",
+          "      columns={approvalColumns}",
+          "      onApprove={(id) => approveRequest(id)}",
+          "    />",
+          "  );",
+          "}",
+        ],
+      },
+      {
+        title: "Production Support",
+        description:
+          "Investigated and resolved production issues spanning APIs, workflow logic, frontend integration, and Oracle SQL.",
+        stack: ["Spring Boot", "Oracle SQL", "Tomcat"],
+      },
     ],
   },
 ];
@@ -242,6 +326,7 @@ export const focusItems: FocusItem[] = [
   { index: "03", title: "Database Internals", status: "LEARNING" },
   { index: "04", title: "Backend Architecture", status: "BUILDING" },
   { index: "05", title: "Data Structures and Algorithms", status: "PRACTISING" },
+  { index: "06", title: "Go (Golang) — Backend Systems", status: "LEARNING" },
 ];
 
 export const contactConfig: ContactConfig = {

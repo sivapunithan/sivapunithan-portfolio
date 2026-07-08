@@ -8,6 +8,7 @@ const SECTION_FILE: Record<string, string> = {
   about: "About.java",
   work: "Projects.java",
   stack: "Stack.java",
+  code: "ProcurementController.java",
   experience: "Experience.java",
   education: "Education.java",
   focus: "CurrentFocus.java",
@@ -15,15 +16,17 @@ const SECTION_FILE: Record<string, string> = {
 };
 
 /**
- * IntelliJ-style bottom status bar: branch · current file · encoding · runtime.
- * Fixed at viewport bottom, full width, sits below the workspace gutter.
+ * IntelliJ-style bottom status bar.
+ * Left: branch · active file.
+ * Right: build status · errors · warnings · Java 17 · encoding.
  */
 export function StatusBar() {
   const activeSection = useActiveSection();
   const file = SECTION_FILE[activeSection ?? "intro"] ?? "SivapunithanS.java";
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 flex h-7 items-center justify-between border-t border-accent-lavender/35 bg-background-deep px-4 lg:pl-20">
+    <div className="fixed bottom-0 left-0 right-0 z-50 flex h-7 items-center justify-between border-t border-accent-lavender/35 bg-background-deep px-4 lg:pl-16">
+      {/* Left — branch + file */}
       <div className="flex items-center gap-4">
         <span className="flex items-center gap-1.5 font-mono text-[10px] text-muted">
           <span className="text-accent-green" aria-hidden="true">
@@ -51,9 +54,24 @@ export function StatusBar() {
         </span>
       </div>
 
-      <div className="flex items-center gap-4">
-        <span className="hidden font-mono text-[10px] text-muted md:inline">Java 17</span>
+      {/* Right — build status + diagnostics + encoding */}
+      <div className="flex items-center gap-3">
+        {/* Build result */}
+        <span className="hidden items-center gap-1.5 font-mono text-[10px] text-accent-green lg:flex">
+          <span aria-hidden="true">✓</span>
+          BUILD SUCCESS
+        </span>
+
+        <span aria-hidden="true" className="hidden font-mono text-[10px] text-muted/40 lg:inline">
+          ·
+        </span>
+
+        <span className="hidden font-mono text-[10px] text-muted md:inline">Spring Boot 3.5</span>
         <span aria-hidden="true" className="hidden font-mono text-[10px] text-muted/40 md:inline">
+          ·
+        </span>
+        <span className="hidden font-mono text-[10px] text-muted md:inline">Java 21</span>
+        <span aria-hidden="true" className="font-mono text-[10px] text-muted/40">
           ·
         </span>
         <span className="font-mono text-[10px] text-muted">UTF-8</span>

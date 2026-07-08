@@ -6,6 +6,7 @@ import { HeroSection } from "@/components/sections/hero-section";
 import { IntroductionSection } from "@/components/sections/introduction-section";
 import { ProjectsSection } from "@/components/sections/projects-section";
 import { StackSection } from "@/components/sections/stack-section";
+import { CodeShowcaseSection } from "@/components/sections/code-showcase-section";
 import { PageShell } from "@/components/motion/page-shell";
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
       <IntroductionSection />
       <ProjectsSection />
       <StackSection />
+      <CodeShowcaseSection />
       <ExperienceSection />
       <EducationSection />
       <CurrentFocusSection />
