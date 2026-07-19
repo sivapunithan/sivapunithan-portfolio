@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import { JetBrains_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import { ActiveSectionProvider } from "@/components/layout/active-section-provider";
-import { BootScreen } from "@/components/layout/boot-screen";
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
 import { StatusBar } from "@/components/layout/status-bar";
 import { WorkspaceBar } from "@/components/layout/workspace-bar";
 import { WorkspaceGutter } from "@/components/layout/workspace-gutter";
-import { CustomCursor } from "@/components/ui/custom-cursor";
+import { IntroLoader } from "@/components/sections/intro-loader";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import { gutterSections, siteConfig } from "@/data/portfolio";
 import { getSiteUrl } from "@/lib/utils";
@@ -98,8 +97,7 @@ export default function RootLayout({
     <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body>
         <MotionProvider>
-          <BootScreen />
-          <CustomCursor />
+          <IntroLoader />
           <a href="#main" className="skip-link">
             Skip to content
           </a>

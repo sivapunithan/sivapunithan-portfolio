@@ -1,13 +1,8 @@
 import { focusItems } from "@/data/portfolio";
 import { SectionReveal } from "@/components/motion/section-reveal";
-import { FocusItems } from "@/components/sections/focus-items";
 import { Container } from "@/components/ui/container";
 import { SectionLabel } from "@/components/ui/section-label";
 
-/**
- * 05 / CURRENT FOCUS — staggered terminal-output rows via FocusItems.
- * Markers flicker once on entry; rows reveal with stagger.
- */
 export function CurrentFocusSection() {
   return (
     <section id="focus" className="scroll-mt-24">
@@ -15,11 +10,21 @@ export function CurrentFocusSection() {
         <SectionReveal className="mb-12 space-y-5 md:mb-16">
           <SectionLabel index="07" label="CURRENT FOCUS" />
           <h2 className="font-display text-3xl font-semibold tracking-tight text-primary md:text-4xl">
-            What I am sharpening right now.
+            Keeping the fundamentals sharp while scaling up.
           </h2>
         </SectionReveal>
 
-        <FocusItems items={focusItems} />
+        <SectionReveal>
+          <div className="grid gap-4 md:grid-cols-2">
+            {focusItems.map((item) => (
+              <div key={item.title} className="rounded-[1rem] border border-edge bg-surface/30 p-5">
+                <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-accent-orange">{item.index}</p>
+                <p className="mt-3 text-lg text-primary">{item.title}</p>
+                <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted">{item.status}</p>
+              </div>
+            ))}
+          </div>
+        </SectionReveal>
       </Container>
     </section>
   );

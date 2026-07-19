@@ -1,35 +1,30 @@
 import { SectionReveal } from "@/components/motion/section-reveal";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container } from "@/components/ui/container";
-import { Divider } from "@/components/ui/divider";
 import { SectionLabel } from "@/components/ui/section-label";
 
-/** 01 / INTRODUCTION — two-column editorial layout, no cards, no icons. */
 export function IntroductionSection() {
   return (
     <section id="about" className="scroll-mt-24">
       <Container className="py-20 md:py-28">
         <SectionReveal>
-          <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
-            <div className="space-y-4 lg:col-span-3">
+          <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-14">
+            <div className="space-y-4">
               <SectionLabel index="01" label="INTRODUCTION" />
-              <Breadcrumb segments={["core", "about"]} className="text-muted/70" />
+              <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-muted">
+                Backend systems, presented with editorial impact.
+              </p>
             </div>
 
-            <div className="lg:col-span-8 lg:col-start-5">
-              <h2 className="font-display text-2xl leading-snug font-semibold tracking-tight text-primary sm:text-3xl md:text-4xl">
-                I care about the invisible parts of software — APIs, data flows, validations,
-                persistence, and the business rules that make products reliable.
+            <div className="space-y-6">
+              <h2 className="font-display text-3xl leading-tight font-semibold tracking-tight text-primary sm:text-4xl md:text-5xl">
+                I work where business workflows, backend logic and data integrity meet.
               </h2>
-              <p className="mt-8 max-w-2xl leading-relaxed text-secondary">
-                I am a backend-focused full-stack developer working with Java, Spring Boot, SQL,
-                Next.js, and TypeScript. I enjoy debugging complex workflows, designing practical
-                APIs, and building maintainable software that solves real operational problems.
+              <p className="max-w-2xl text-lg leading-relaxed text-secondary">
+                My work spans Java and Spring Boot development, REST APIs, enterprise workflows, Oracle SQL and MySQL, production debugging, and Next.js plus TypeScript integration.
               </p>
             </div>
           </div>
         </SectionReveal>
-        <Divider subtle className="mt-20 md:mt-28" />
       </Container>
     </section>
   );
