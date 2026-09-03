@@ -2,10 +2,9 @@
 
 **IDEA NOIR — Engineered with Intent.** A single-page portfolio for a
 backend-focused full-stack developer, designed as a premium engineering
-workspace inspired by IntelliJ IDEA's dark aesthetic — without cloning the
-IDE. Dark workspace surfaces, editorial spacing, thin dividers, three-role
-typography, and syntax-colour accents used as sparingly as syntax
-highlighting itself.
+site introduced by a short Java-editor narrative. After the intro, the site
+becomes an editorial engineering portfolio with dark surfaces, generous
+spacing, thin dividers, and occasional IDE details where they add meaning.
 
 ## Tech stack
 
@@ -13,7 +12,7 @@ highlighting itself.
 - TypeScript (strict)
 - Tailwind CSS v4 (CSS-first config in `src/app/globals.css`)
 - [Motion for React](https://motion.dev) (`motion/react`) — conservative, one-time reveals
-- `next/font` (Manrope + JetBrains Mono) and `next/image`
+- local/system font stacks (no build-time font download) and `next/image`
 - ESLint 9 + Prettier
 
 ## Local setup
@@ -46,19 +45,15 @@ Any Node host or Vercel works:
 
 All content lives in **`src/data/portfolio.ts`** (typed by
 `src/types/portfolio.ts`): site config, navigation, social links, projects,
-stack groups, experience, focus items, and contact copy. Components never
+intro and hero copy, stack groups, experience, focus items, and contact copy. Components never
 hard-code content — edit the data file only.
 
 ### Placeholder checklist
 
 Search `src/data/portfolio.ts` for `[ADD` and replace:
 
-- [ ] `[ADD LINKEDIN URL]` — LinkedIn profile (link hidden until set)
-- [ ] `[ADD GITHUB URL]` — GitHub profile (link hidden until set)
-- [ ] `[ADD PRODUCTION DOMAIN]` — production domain for SEO/sitemap
-- [ ] `[ADD COMPANY NAME]` — employer in the experience section
+- [ ] `[ADD PORTRAIT IMAGE]` — optional portrait (abstract visual shown until set)
 - [ ] `[ADD PROJECT REPOSITORY URL]` — per-project repo links (hidden until set)
-- [ ] `[ADD LIVE DEMO URL]` — per-project demo links (hidden until set)
 - [ ] `[ADD PROJECT SCREENSHOT]` — per-project images (designed placeholder until set)
 
 Email is already set. Placeholder links are never rendered as broken
@@ -80,12 +75,26 @@ résumé (same filename) or change `siteConfig.resumePath`.
 Edit `socialLinks` and `siteConfig.domain` in `src/data/portfolio.ts`.
 The OG image, sitemap, and robots files pick the domain up automatically.
 
-### Custom display font
+### Fonts
 
-The display role currently falls back to Manrope. To use a premium local
-font, follow [`src/assets/fonts/README.md`](src/assets/fonts/README.md):
-place a licensed `display-variable.woff2` there and swap the loader block in
-`src/app/layout.tsx`. **Only self-host fonts you are licensed to embed.**
+The three roles use resilient local/system stacks, so production builds never
+download a font. To add a premium local display font, follow
+[`src/assets/fonts/README.md`](src/assets/fonts/README.md). **Only self-host
+fonts you are licensed to embed.**
+
+## Narrative intro
+
+`CodeEditorIntro` is a small client boundary layered over the already-rendered
+hero. It runs once per browser session, closes automatically after about 4.6
+seconds, supports an immediate button or Escape skip, and is bypassed for
+reduced-motion users. All remaining page sections are Server Components except
+the existing navigation and one-time motion boundaries.
+
+## Project routes
+
+`src/app/projects/[slug]/page.tsx` statically generates a case-study route for
+every project in `src/data/portfolio.ts`. Invalid slugs return not found; no
+project route is hard-coded separately.
 
 ## Reduced motion
 
@@ -99,20 +108,19 @@ only enabled for `no-preference` users.
 
 ```
 src/
-  app/                 layout (fonts, metadata, chrome), page, globals.css,
-                       sitemap.ts, robots.ts, opengraph-image.tsx
+  app/                 layout, page, globals.css, metadata routes, and
+                       data-driven projects/[slug] pages
   assets/fonts/        local display font slot + replacement guide
   components/
-    layout/            workspace-bar, navbar, mobile-menu, workspace-gutter,
-                       footer, active-section-provider
-    sections/          hero, introduction, projects, stack, experience,
-                       current-focus, contact
+    intro/             session hook, editor profile, narrative intro boundary
+    layout/            navbar, mobile menu, footer, active-section provider
+    sections/          hero, introduction, projects, architecture, experience,
+                       stack, education, current focus, contact
     project/           project-feature, project-visual, project-placeholder,
                        project-links
-    ui/                container, section-label, divider, text-link,
-                       status-label, breadcrumb
-    motion/            motion-provider, text-reveal, mask-reveal, fade-up,
-                       image-reveal, section-reveal
+    ui/                container, section-label, text-link, status-label
+    motion/            motion-provider, mask-reveal, fade-up, image-reveal,
+                       section-reveal
   data/portfolio.ts    ALL editable content + placeholders
   types/portfolio.ts   typed content models
   lib/utils.ts         cn(), isPlaceholder(), getSiteUrl()

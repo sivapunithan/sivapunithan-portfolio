@@ -1,199 +1,247 @@
 import type {
+  ArchitectureContent,
   ContactConfig,
   EducationEntry,
   ExperienceEntry,
   FocusItem,
+  HeroContent,
+  IntroContent,
   NavItem,
   Project,
+  SectionCopy,
   SiteConfig,
   SocialLink,
   StackGroup,
 } from "@/types/portfolio";
 
-/**
- * Central content configuration.
- * Every editable value of the portfolio lives here — components never
- * hard-code content. Placeholders follow the [ADD …] convention and are
- * detected by isPlaceholder() in src/lib/utils.ts:
- *
- *   [ADD PROJECT REPOSITORY URL]
- *   [ADD LIVE DEMO URL]
- *   [ADD PROJECT SCREENSHOT]
- *
- * Placeholder links are never rendered as broken actions; placeholder
- * screenshots render a designed IDE-inspired visual instead.
- */
-
 export const siteConfig: SiteConfig = {
   name: "Sivapunithan S",
   brandMark: "SP",
-  role: "Java Developer · Spring Boot · Full-Stack",
-  description: "Java, Spring Boot, SQL, and backend-focused full-stack developer portfolio.",
+  role: "Java Backend Engineer",
+  description:
+    "Java and Spring Boot engineer working across APIs, enterprise workflows, SQL and Next.js applications.",
   domain: "sivapunithan.in",
-  workspaceBreadcrumb: ["portfolio", "sivapunithan-s", "java-developer"],
-  availability: "OPEN TO OPPORTUNITIES",
+  location: "Kanyakumari, Tamil Nadu, India",
+  availability: "Open to relevant opportunities",
   resumePath: "/resume.pdf",
 };
 
 export const navigation: NavItem[] = [
   { label: "About", href: "#about" },
   { label: "Work", href: "#work" },
-  { label: "Stack", href: "#stack" },
-  { label: "Code", href: "#code" },
+  { label: "Architecture", href: "#architecture" },
   { label: "Experience", href: "#experience" },
-  { label: "Education", href: "#education" },
+  { label: "Stack", href: "#stack" },
   { label: "Contact", href: "#contact" },
-];
-
-export const gutterSections: NavItem[] = [
-  { label: "INTRO", href: "#about" },
-  { label: "WORK", href: "#work" },
-  { label: "STACK", href: "#stack" },
-  { label: "CODE", href: "#code" },
-  { label: "EXPERIENCE", href: "#experience" },
-  { label: "EDUCATION", href: "#education" },
-  { label: "FOCUS", href: "#focus" },
-  { label: "CONTACT", href: "#contact" },
 ];
 
 export const socialLinks: SocialLink[] = [
   { label: "GitHub", href: "https://github.com/sivapunithan" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/sivapunithan-sathasivan-462959257/" },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/sivapunithan-sathasivan-462959257/",
+  },
   { label: "Email", href: "mailto:punithansiva987@gmail.com" },
 ];
+
+export const introContent: IntroContent = {
+  tab: "Sivapunithan.java",
+  openingMessage: "Opening engineer profile...",
+  skipLabel: "Skip intro",
+  profileLines: [
+    "public final class Sivapunithan {",
+    "",
+    "    String role = \"Java Backend Engineer\";",
+    "",
+    "    String[] core = {",
+    "        \"Java\",",
+    "        \"Spring Boot\",",
+    "        \"REST APIs\",",
+    "        \"SQL\"",
+    "    };",
+    "",
+    "    String focus = \"Reliable backend systems\";",
+    "}",
+  ],
+  revealName: "Sivapunithan",
+  revealRole: "Java Backend Engineer",
+  revealStatement: "Building reliable systems.",
+};
+
+export const heroContent: HeroContent = {
+  fileLabel: "Sivapunithan.java",
+  eyebrow: "Engineer profile / ready",
+  heading: "I build reliable backend systems and the interfaces that operate them.",
+  body: "Java and Spring Boot engineer working across APIs, enterprise workflows, SQL and Next.js applications.",
+  primaryAction: "View selected work",
+  resumeAction: "Résumé",
+  architectureCaption: "request path",
+  architecturePath: ["interface", "API", "service", "data"],
+  portrait: {
+    src: "[ADD PORTRAIT IMAGE]",
+    alt: "Portrait of Sivapunithan S",
+  },
+};
+
+export const sectionCopy: Record<
+  "introduction" | "projects" | "experience" | "stack" | "education" | "focus",
+  SectionCopy
+> = {
+  introduction: {
+    index: "02",
+    label: "ENGINEERING INTRODUCTION",
+    heading: "I work where business workflows, backend logic and data integrity meet.",
+    body: "My work spans Java and Spring Boot development, REST APIs, enterprise workflows, Oracle SQL and MySQL, production debugging, and Next.js with TypeScript integration.",
+  },
+  projects: {
+    index: "03",
+    label: "SELECTED WORK",
+    heading: "Systems thinking, production discipline and clear technical choices.",
+  },
+  experience: {
+    index: "05",
+    label: "EXPERIENCE",
+    heading: "One continuous role, working across enterprise workflows and backend reliability.",
+  },
+  stack: {
+    index: "06",
+    label: "TECHNICAL STACK",
+    heading: "A practical toolkit for building and operating backend-heavy applications.",
+  },
+  education: {
+    index: "07",
+    label: "EDUCATION",
+    heading: "Academic foundation.",
+  },
+  focus: {
+    index: "08",
+    label: "CURRENT FOCUS",
+    heading: "Keeping the fundamentals sharp while expanding the system view.",
+  },
+};
 
 export const projects: Project[] = [
   {
     index: "01",
-    slug: "library-management-system",
-    title: "Library Management System",
-    category: "FULL-STACK APPLICATION",
+    slug: "enterprise-procurement-workflow",
+    title: "Enterprise Procurement Workflow",
+    category: "ANONYMISED ENTERPRISE WORK",
     summary:
-      "A role-based platform with separate administrative and user workflows for managing books, authors, publishers, lending, and returns.",
-    stack: ["Java", "Spring Boot", "MySQL", "Next.js", "TypeScript"],
-    highlightsLabel: "HIGHLIGHTS",
-    highlights: [
-      "Designed and integrated REST API workflows",
-      "Implemented role-aware navigation and access handling",
-      "Built lending and return flows",
-      "Resolved authentication, CORS, and UI-state issues",
-    ],
-    status: { label: "COMPLETED LEARNING PROJECT", tone: "green" },
-    links: [
-      { label: "Repository", href: "[ADD PROJECT REPOSITORY URL]" },
-      { label: "Live demo", href: "[ADD LIVE DEMO URL]" },
-    ],
-    image: { src: "[ADD PROJECT SCREENSHOT]", alt: "Library Management System interface" },
-    layout: "imageLeft",
-    confidential: false,
-    accent: "blue",
+      "A backend-heavy procurement platform where approval states, persistence behaviour and workflow visibility require careful, confidential handling.",
+    problem:
+      "Multi-stage procurement flows can fail when validation, persisted state and role visibility fall out of sync.",
+    responsibility:
+      "Contributed to Java and Spring Boot APIs, Oracle SQL investigation, workflow debugging and Next.js integration across procurement-related modules.",
+    decision:
+      "Treat state transitions and validation boundaries as explicit workflow concerns, while keeping client and operational details anonymised.",
+    stack: ["Java", "Spring Boot", "Oracle SQL", "Next.js", "TypeScript"],
+    status: { label: "ANONYMISED CASE STUDY", tone: "neutral" },
+    links: [],
+    image: { src: "[ADD PROJECT SCREENSHOT]", alt: "Enterprise workflow architecture" },
+    layout: "wide",
+    confidential: true,
+    accent: "orange",
   },
   {
     index: "02",
-    slug: "movie-ticket-booking-application",
-    title: "Movie Ticket Booking Application",
-    category: "BACKEND APPLICATION",
+    slug: "concurrent-movie-booking-system",
+    title: "Concurrent Movie Booking System",
+    category: "BACKEND SYSTEM",
     summary:
-      "A backend-focused booking system with concurrent seat reservation, transaction safety via optimistic locking, and rollback handling for simultaneous booking requests.",
+      "A backend-focused booking system designed around concurrent reservation attempts and transactional state changes.",
+    problem:
+      "Two requests can target the same seat before either transaction has completed, risking an invalid double booking.",
+    responsibility:
+      "Modelled the booking domain and REST workflow around seat availability, reservation and confirmation states.",
+    decision:
+      "Designed the booking workflow around optimistic locking and rollback handling for concurrent reservation attempts.",
     stack: ["Java", "Spring Boot", "JPA", "MySQL", "REST APIs"],
-    highlightsLabel: "HIGHLIGHTS",
-    highlights: [
-      "Implemented optimistic locking using JPA @Version fields to prevent double-booking under concurrent requests",
-      "Built REST API endpoints for seat selection, booking confirmation, and real-time availability with rollback handling",
-      "Designed data models for movies, screens, showtimes, seats, and bookings to support the full booking workflow",
-      "Tested multi-threaded booking scenarios to verify concurrency control under simultaneous load",
-      "Structured application as a realistic backend-heavy project focused on data integrity and concurrent access",
-    ],
     status: { label: "IN DEVELOPMENT", tone: "yellow" },
     links: [{ label: "Repository", href: "[ADD PROJECT REPOSITORY URL]" }],
-    image: { src: "[ADD PROJECT SCREENSHOT]", alt: "Movie Ticket Booking Application interface" },
+    image: { src: "[ADD PROJECT SCREENSHOT]", alt: "Concurrent booking system architecture" },
     layout: "imageRight",
     confidential: false,
     accent: "green",
   },
   {
     index: "03",
-    slug: "java-backend-engineering-lab",
-    title: "Java Backend Engineering Lab",
-    category: "ENGINEERING PRACTICE",
+    slug: "library-management-platform",
+    title: "Library Management Platform",
+    category: "FULL-STACK APPLICATION",
     summary:
-      "A structured repository for learning backend fundamentals beyond basic CRUD applications.",
-    stack: ["Java", "SQL", "Git"],
-    highlightsLabel: "HIGHLIGHTS",
-    highlights: [
-      "Java concurrency exercises",
-      "Networking experiments",
-      "Echo-server implementation",
-      "SQL practice",
-      "Technical notes and observations",
-    ],
-    status: { label: "ONGOING", tone: "blue" },
+      "A role-based library platform connecting Spring Boot services, Next.js interfaces, authentication and lending workflows.",
+    problem:
+      "Administrative catalogue work and member lending actions need different permissions without fragmenting the product experience.",
+    responsibility:
+      "Built and integrated API-driven flows for catalogue management, lending, returns and role-aware navigation.",
+    decision:
+      "Kept role checks aligned across backend endpoints and interface states so unavailable actions remain clear to each user type.",
+    stack: ["Java", "Spring Boot", "MySQL", "Next.js", "TypeScript"],
+    status: { label: "COMPLETED LEARNING PROJECT", tone: "green" },
     links: [{ label: "Repository", href: "[ADD PROJECT REPOSITORY URL]" }],
-    image: { src: "[ADD PROJECT SCREENSHOT]", alt: "Java Backend Engineering Lab" },
-    layout: "wide",
+    image: { src: "[ADD PROJECT SCREENSHOT]", alt: "Library management platform interface" },
+    layout: "imageLeft",
     confidential: false,
-    accent: "orange",
-  },
-  {
-    index: "04",
-    slug: "procurement-workflow-case-study",
-    title: "Procurement Workflow Case Study",
-    category: "ANONYMISED ENTERPRISE WORK",
-    summary:
-      "A sanitised case study covering workflow debugging, persistence fixes, approval-state handling, calculation corrections, and frontend-backend integration.",
-    stack: ["Java", "Spring Boot", "Oracle SQL", "ServiceNow", "Next.js"],
-    highlightsLabel: "HIGHLIGHTS",
-    highlights: [
-      "Debugged and resolved approval-flow issues across purchase request and GRN workflows",
-      "Fixed database-persistence problems including duplicate invoice checks and financial-calculation errors",
-      "Identified and corrected role-based task-visibility gaps across requester, approver, and finance stages",
-      "Integrated frontend approval dashboards and procurement forms with backend Java and Spring Boot APIs",
-      "Worked across Oracle SQL queries, ServiceNow asset records, and Next.js pages in a production-style enterprise codebase",
-    ],
-    status: { label: "ANONYMISED CASE STUDY", tone: "neutral" },
-    links: [],
-    image: { src: "[ADD PROJECT SCREENSHOT]", alt: "Procurement workflow case study" },
-    layout: "wide",
-    confidential: true,
-    accent: "lavender",
-    terminalBlock: [
-      "$ debug workflow --module procurement",
-      "status: resolved",
-      "stack: Spring Boot · Oracle SQL · ServiceNow · Next.js",
-    ],
+    accent: "blue",
   },
 ];
+
+export const architectureContent: ArchitectureContent = {
+  section: {
+    index: "04",
+    label: "ARCHITECTURE SPOTLIGHT",
+    heading: "A clear request path makes workflow rules easier to reason about.",
+    body: "The interface presents permitted actions; the API validates the request; the service layer owns the transition; persistence protects the resulting state; integrations remain explicit boundaries.",
+  },
+  flow: [
+    { label: "Next.js interface", detail: "Role-aware action and state" },
+    { label: "Spring Boot API", detail: "Validation and contract" },
+    { label: "Service / domain", detail: "Workflow transition" },
+    { label: "Oracle SQL or MySQL", detail: "Transactional state" },
+    { label: "Integration boundary", detail: "External dependency" },
+  ],
+  concernLabel: "Authentic concern",
+  concern:
+    "In an approval or reservation flow, success is not only an accepted request. The stored state, permitted next action and visible role-specific task must still agree after the transaction completes.",
+  principlesLabel: "Design checks",
+  principles: [
+    "Validate before changing workflow state.",
+    "Keep transaction boundaries explicit.",
+    "Make role-based visibility follow persisted state.",
+    "Treat integrations as failure-aware boundaries.",
+  ],
+};
 
 export const stackGroups: StackGroup[] = [
   {
     index: "01",
     title: "BACKEND",
     accent: "orange",
-    items: ["Java", "Spring Boot", "Spring Security", "REST APIs", "JPA"],
+    items: ["Java", "Spring Boot", "Spring Security", "REST APIs", "JPA / Hibernate"],
   },
   {
     index: "02",
     title: "DATA",
     accent: "blue",
-    items: ["Oracle SQL", "MySQL", "Hibernate", "SQL Optimisation"],
+    items: ["Oracle SQL", "MySQL", "Transaction handling", "SQL optimisation"],
   },
   {
     index: "03",
     title: "FRONTEND",
     accent: "neutral",
-    items: ["Next.js", "React.js", "TypeScript", "API Integration"],
+    items: ["Next.js", "React", "TypeScript", "API integration"],
   },
   {
     index: "04",
-    title: "ENGINEERING PRACTICE",
+    title: "ENGINEERING",
     accent: "green",
-    items: ["ServiceNow Integration", "Concurrency Control", "Maven", "Debugging"],
+    items: ["Git", "Maven", "Docker", "Debugging", "Concurrency control"],
   },
   {
     index: "05",
     title: "TOOLS",
     accent: "neutral",
-    items: ["Git", "SVN", "Postman", "IntelliJ IDEA", "VS Code"],
+    items: ["IntelliJ IDEA", "VS Code", "Postman / Bruno", "SVN"],
   },
 ];
 
@@ -204,107 +252,22 @@ export const experience: ExperienceEntry[] = [
     location: "Bengaluru, Karnataka, India",
     startDate: "July 2025",
     endDate: "Present",
-    title: "Enterprise Procurement & Asset Management Platform",
+    title: "Enterprise application development",
     summary:
-      "Contributing to the development of enterprise business applications using Java, Spring Boot, Oracle SQL, Next.js and TypeScript.",
-    techTags: [
-      "Java",
-      "Spring Boot",
-      "REST APIs",
-      "Oracle SQL",
-      "Next.js",
-      "TypeScript",
-      "Spring Security",
-      "Tomcat",
-      "SVN",
-    ],
+      "Contributing to enterprise business applications using Java, Spring Boot, Oracle SQL, Next.js and TypeScript.",
+    techTags: ["Java", "Spring Boot", "REST APIs", "Oracle SQL", "Next.js", "TypeScript"],
     modules: [
       {
-        title: "Workflow Engine",
+        title: "Workflow handling",
         description:
-          "Built multi-stage approval workflows with business validations and role-based transitions across requester, approver, and finance stages.",
+          "Contributed to multi-stage approval behaviour, business validations and role-based workflow transitions.",
         stack: ["Spring Boot", "REST APIs", "Spring Security"],
-        codeFile: "Workflow.java",
-        codeSnippet: [
-          "@Service",
-          "public class WorkflowEngine {",
-          "",
-          "    @Transactional",
-          "    public void transition(PurchaseRequest request, WorkflowEvent event) {",
-          "        WorkflowStage next = stageResolver.resolve(request, event);",
-          "        request.setStage(next);",
-          "",
-          "        if (next == WorkflowStage.FINANCE_REVIEW) {",
-          "            notificationService.notifyFinanceTeam(request);",
-          "        }",
-          "    }",
-          "}",
-        ],
       },
       {
-        title: "REST APIs",
+        title: "Persistence and debugging",
         description:
-          "Designed and built backend APIs powering procurement, GRN, AP processing, and payment-request modules.",
-        stack: ["Spring Boot", "REST APIs", "JPA"],
-        codeFile: "ProcurementController.java",
-        codeSnippet: [
-          "@RestController",
-          "@RequestMapping(\"/api/v1/procurement\")",
-          "public class ProcurementController {",
-          "",
-          "    @PostMapping(\"/grn\")",
-          "    public ResponseEntity<GrnDto> createGrn(",
-          "            @Valid @RequestBody CreateGrnCommand cmd) {",
-          "        return ResponseEntity.ok(grnService.create(cmd));",
-          "    }",
-          "}",
-        ],
-      },
-      {
-        title: "Database",
-        description:
-          "Wrote and optimised Oracle SQL queries used for procurement reporting, validations, and workflow checks.",
-        stack: ["Oracle SQL", "JPA"],
-        codeFile: "OracleQueries.sql",
-        codeSnippet: [
-          "SELECT pr.id, pr.status, d.name AS department,",
-          "       SUM(pi.amount) AS total_amount",
-          "FROM purchase_request pr",
-          "JOIN department d ON d.id = pr.department_id",
-          "JOIN purchase_item pi ON pi.request_id = pr.id",
-          "WHERE pr.created_at >= :startDate",
-          "  AND pr.deleted_at IS NULL",
-          "GROUP BY pr.id, pr.status, d.name",
-          "ORDER BY total_amount DESC;",
-        ],
-      },
-      {
-        title: "Frontend",
-        description:
-          "Developed Next.js pages integrating backend APIs for procurement workflows, including approval dashboards and data tables.",
-        stack: ["Next.js", "TypeScript"],
-        codeFile: "ApprovalDashboard.tsx",
-        codeSnippet: [
-          "export function ApprovalDashboard() {",
-          "  const { data, isLoading } = usePendingApprovals();",
-          "",
-          "  if (isLoading) return <DashboardSkeleton />;",
-          "",
-          "  return (",
-          "    <DataTable",
-          "      rows={data}",
-          "      columns={approvalColumns}",
-          "      onApprove={(id) => approveRequest(id)}",
-          "    />",
-          "  );",
-          "}",
-        ],
-      },
-      {
-        title: "Production Support",
-        description:
-          "Investigated and resolved production issues spanning APIs, workflow logic, frontend integration, and Oracle SQL.",
-        stack: ["Spring Boot", "Oracle SQL", "Tomcat"],
+          "Investigated application issues across backend logic, Oracle SQL and frontend integration, then implemented scoped fixes.",
+        stack: ["Oracle SQL", "JPA", "Next.js"],
       },
     ],
   },
@@ -330,7 +293,10 @@ export const focusItems: FocusItem[] = [
 ];
 
 export const contactConfig: ContactConfig = {
-  heading: "Let's build something reliable.",
-  body: "I am open to software-development opportunities involving Java, Spring Boot, Oracle SQL, Next.js, and backend-heavy full-stack work.",
+  heading: "Let’s build software that stays dependable when the workflow gets complicated.",
+  body: "I am open to roles involving Java, Spring Boot, REST APIs, workflow systems, SQL and production-facing backend work.",
   email: "punithansiva987@gmail.com",
+  emailLabel: "Email",
+  locationLabel: "Location",
+  availabilityLabel: "Availability",
 };

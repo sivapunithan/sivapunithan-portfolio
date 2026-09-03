@@ -1,41 +1,77 @@
-import { contactConfig, siteConfig, socialLinks } from "@/data/portfolio";
 import { SectionReveal } from "@/components/motion/section-reveal";
-import { ApiContactPanel } from "@/components/sections/api-contact-panel";
-import { SpringBootLog } from "@/components/sections/spring-boot-log";
 import { Container } from "@/components/ui/container";
-import { CodeCommentLabel } from "@/components/ui/code-comment-label";
 import { SectionLabel } from "@/components/ui/section-label";
+import { contactConfig, siteConfig, socialLinks } from "@/data/portfolio";
 import { isPlaceholder } from "@/lib/utils";
 
-/** 06 / CONTACT — API endpoint presentation with existing contact actions. */
 export function ContactSection() {
   const emailHref = isPlaceholder(contactConfig.email) ? null : `mailto:${contactConfig.email}`;
-  const linkedIn = socialLinks.find((link) => link.label === "LinkedIn");
-  const gitHub = socialLinks.find((link) => link.label === "GitHub");
+  const visibleSocials = socialLinks.filter(
+    (link) => link.label !== "Email" && !isPlaceholder(link.href),
+  );
 
   return (
-    <section id="contact" className="scroll-mt-24">
+    <section id="contact" className="scroll-mt-24 border-t border-edge bg-surface">
       <Container className="py-24 md:py-36">
-        <SectionReveal className="space-y-5">
-          <SectionLabel index="08" label="CONTACT" />
-          <CodeCommentLabel>{"// contact endpoint ready"}</CodeCommentLabel>
-          <h2 className="max-w-3xl font-display text-4xl leading-[1.08] font-bold tracking-tight text-primary sm:text-5xl md:text-6xl">
-            Let&apos;s build something reliable.
+        <SectionReveal>
+          <SectionLabel index="09" label="CONTACT" />
+          <h2 className="mt-10 max-w-5xl font-display text-5xl font-semibold leading-[0.98] tracking-[-0.045em] text-primary sm:text-6xl md:text-7xl">
+            {contactConfig.heading}
           </h2>
-          <p className="max-w-xl pt-3 leading-relaxed text-secondary">{contactConfig.body}</p>
-        </SectionReveal>
+          <p className="mt-7 max-w-2xl text-lg leading-relaxed text-secondary">
+            {contactConfig.body}
+          </p>
 
-        <SectionReveal delay={0.08} className="mt-12">
-          <SpringBootLog />
-        </SectionReveal>
+          <div className="mt-10 flex flex-wrap gap-3">
+            {emailHref && (
+              <a
+                href={emailHref}
+                className="flex min-h-11 items-center border border-accent-orange bg-accent-orange px-5 font-mono text-[10px] uppercase tracking-[0.16em] text-background transition-colors hover:bg-transparent hover:text-primary"
+              >
+                Email me
+              </a>
+            )}
+            {visibleSocials.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex min-h-11 items-center border border-edge px-5 font-mono text-[10px] uppercase tracking-[0.16em] text-primary transition-colors hover:border-accent-orange"
+              >
+                {link.label}
+              </a>
+            ))}
+            <a
+              href={siteConfig.resumePath}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex min-h-11 items-center border border-edge px-5 font-mono text-[10px] uppercase tracking-[0.16em] text-primary transition-colors hover:border-accent-orange"
+            >
+              Résumé
+            </a>
+          </div>
 
-        <SectionReveal delay={0.15} className="mt-0">
-          <ApiContactPanel
-            emailHref={emailHref}
-            resumePath={siteConfig.resumePath}
-            linkedInHref={linkedIn && !isPlaceholder(linkedIn.href) ? linkedIn.href : undefined}
-            gitHubHref={gitHub && !isPlaceholder(gitHub.href) ? gitHub.href : undefined}
-          />
+          <dl className="mt-14 grid gap-7 border-t border-edge pt-7 sm:grid-cols-3">
+            <div>
+              <dt className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted">
+                {contactConfig.emailLabel}
+              </dt>
+              <dd className="mt-2 break-all text-sm text-secondary">{contactConfig.email}</dd>
+            </div>
+            <div>
+              <dt className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted">
+                {contactConfig.locationLabel}
+              </dt>
+              <dd className="mt-2 text-sm text-secondary">{siteConfig.location}</dd>
+            </div>
+            <div>
+              <dt className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted">
+                {contactConfig.availabilityLabel}
+              </dt>
+              <dd className="mt-2 text-sm text-secondary">{siteConfig.availability}</dd>
+            </div>
+          </dl>
         </SectionReveal>
       </Container>
     </section>

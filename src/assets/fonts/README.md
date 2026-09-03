@@ -2,8 +2,8 @@
 
 The display role (`--font-display`) is designed for a **premium local variable
 font**. No font file is bundled because commercial display fonts require a
-licence. Until one is added, Manrope doubles as the display face and the build
-works without any change.
+licence. Until one is added, the display, body, and mono roles use local system
+stacks declared in `src/app/globals.css`; builds require no network request.
 
 ## How to activate a local display font
 
@@ -18,9 +18,9 @@ works without any change.
    src/assets/fonts/display-variable.woff2
    ```
 
-3. **Swap the loader** in `src/app/layout.tsx`: replace the Manrope-based
-   `display` constant with the commented `next/font/local` block directly above
-   it (it already points at this path).
+3. **Load it locally** with `next/font/local` in `src/app/layout.tsx`, exposing
+   it as `--font-display`, or add a licensed `@font-face` declaration in
+   `src/app/globals.css`.
 4. Run `npm run build` to confirm the font resolves.
 
 ## Licensing reminder

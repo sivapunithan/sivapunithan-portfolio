@@ -1,59 +1,49 @@
 import type { AccentTone } from "@/types/portfolio";
-import { stackGroups } from "@/data/portfolio";
 import { SectionReveal } from "@/components/motion/section-reveal";
-import { AnimatedSkillCard } from "@/components/sections/animated-skill-card";
 import { Container } from "@/components/ui/container";
-import { CodeCommentLabel } from "@/components/ui/code-comment-label";
 import { SectionLabel } from "@/components/ui/section-label";
+import { sectionCopy, stackGroups } from "@/data/portfolio";
 
-/** Only the category index takes an accent — items stay neutral. */
 const INDEX_TONE: Record<AccentTone, string> = {
   blue: "text-accent-blue",
   green: "text-accent-green",
   orange: "text-accent-orange",
   yellow: "text-accent-yellow",
-  lavender: "text-accent-lavender",
   neutral: "text-secondary",
 };
 
-/**
- * 03 / STACK — typographic grid inspired by an IDE settings panel.
- * Thin separators between rows, no cards, no icons, no logos,
- * no pills, no percentages.
- */
 export function StackSection() {
+  const copy = sectionCopy.stack;
+
   return (
-    <section id="stack" className="scroll-mt-24">
-      <Container className="py-20 md:py-28">
-        <SectionReveal className="mb-12 space-y-5 md:mb-16">
-          <SectionLabel index="03" label="STACK" />
-          <CodeCommentLabel>{"// skills indexed"}</CodeCommentLabel>
-          <h2 className="font-display text-3xl font-semibold tracking-tight text-primary md:text-4xl">
-            Tools I work with daily.
+    <section id="stack" className="scroll-mt-24 border-y border-edge-subtle bg-surface/25">
+      <Container className="py-24 md:py-32">
+        <SectionReveal className="grid gap-8 lg:grid-cols-[0.55fr_1.45fr] lg:gap-20">
+          <SectionLabel index={copy.index} label={copy.label} />
+          <h2 className="max-w-3xl font-display text-4xl font-semibold leading-tight tracking-[-0.03em] text-primary sm:text-5xl">
+            {copy.heading}
           </h2>
         </SectionReveal>
 
-        <SectionReveal>
-          <div className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-            {stackGroups.map((group) => (
-              <div
-                key={group.title}
-                className="terminal-surface transition duration-200 hover:neon-border"
-              >
-                <div className="border-b border-edge-subtle px-4 py-3">
-                  <p className="font-mono text-[11px] tracking-[0.18em]">
-                    <span className={INDEX_TONE[group.accent]}>{group.index}</span>
-                    <span className="ml-3 text-primary">{group.title}</span>
-                  </p>
-                </div>
-                <ul className="px-4 py-2">
-                  {group.items.map((item, index) => (
-                    <AnimatedSkillCard key={item} item={item} index={index} />
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+        <SectionReveal className="mt-16 grid border-t border-edge sm:grid-cols-2 lg:grid-cols-5">
+          {stackGroups.map((group) => (
+            <div
+              key={group.title}
+              className="border-b border-edge-subtle py-7 sm:px-6 sm:first:pl-0 lg:border-r lg:last:border-r-0"
+            >
+              <p className="font-mono text-[10px] tracking-[0.16em]">
+                <span className={INDEX_TONE[group.accent]}>{group.index}</span>
+                <span className="ml-3 text-primary">{group.title}</span>
+              </p>
+              <ul className="mt-6 space-y-3">
+                {group.items.map((item) => (
+                  <li key={item} className="text-sm text-secondary">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </SectionReveal>
       </Container>
     </section>

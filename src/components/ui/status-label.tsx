@@ -12,7 +12,6 @@ const DOT_TONE: Record<AccentTone, string> = {
   green: "bg-accent-green",
   orange: "bg-accent-orange",
   yellow: "bg-accent-yellow",
-  lavender: "bg-accent-lavender",
   neutral: "bg-muted",
 };
 
