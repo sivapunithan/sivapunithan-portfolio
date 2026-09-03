@@ -12,25 +12,16 @@ export default function Icon() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#050510",
-        border: "1px solid rgba(255, 43, 214, 0.55)",
-        borderRadius: 8,
+        background: "#090909",
+        border: "1px solid rgba(244, 235, 220, 0.24)",
         boxSizing: "border-box",
         position: "relative",
         overflow: "hidden",
-        color: "#fff7fd",
+        color: "#f4ebdc",
         fontFamily: "Arial, sans-serif",
         fontWeight: 700,
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "radial-gradient(circle at 50% 0%, rgba(255, 43, 214, 0.18), transparent 60%)",
-        }}
-      />
       <div
         style={{
           position: "relative",
@@ -39,7 +30,6 @@ export default function Icon() {
           justifyContent: "center",
           fontSize: 16,
           letterSpacing: -1,
-          textShadow: "0 0 6px rgba(255, 43, 214, 0.45)",
         }}
       >
         SP
@@ -51,9 +41,7 @@ export default function Icon() {
           top: 5,
           width: 4,
           height: 4,
-          borderRadius: 999,
-          background: "#f89820",
-          boxShadow: "0 0 6px rgba(248, 152, 32, 0.75)",
+          background: "#c45f32",
         }}
       />
       <div
@@ -63,7 +51,7 @@ export default function Icon() {
           right: 6,
           bottom: 4,
           height: 1,
-          background: "rgba(255, 43, 214, 0.7)",
+          background: "#c45f32",
         }}
       />
     </div>,

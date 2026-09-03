@@ -1,5 +1,3 @@
-"use client";
-
 import type { ReactNode } from "react";
 import { MaskReveal } from "@/components/motion/mask-reveal";
 
@@ -10,7 +8,7 @@ interface ImageRevealProps {
   delay?: number;
 }
 
-/** Controlled mask reveal tuned for project visuals (bottom-up wipe). */
+/** Project visual wrapper retained as a semantic component boundary. */
 export function ImageReveal({ children, className, delay = 0 }: ImageRevealProps) {
   return (
     <MaskReveal className={className} delay={delay} direction="up">

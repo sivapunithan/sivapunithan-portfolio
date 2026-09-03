@@ -1,0 +1,1186 @@
+diff --git a/src/app/globals.css b/src/app/globals.css
+index b87c177..590ccbd 100644
+--- a/src/app/globals.css
++++ b/src/app/globals.css
+@@ -8,25 +8,25 @@
+    ========================================================================== */
+ 
+ :root {
+-  --background: #080812;
+-  --background-deep: #050510;
+-  --surface: #0b0b14;
+-  --surface-raised: #121225;
+-  --surface-hover: #1a1730;
+-
+-  --border: rgba(255, 255, 255, 0.14);
+-  --border-subtle: rgba(255, 255, 255, 0.075);
+-
+-  --text-primary: #fff7fd;
+-  --text-secondary: #d8d2e8;
+-  --text-muted: #8f8aa8;
+-
+-  --accent-blue: #35d8ff;
+-  --accent-green: #5cf2a6;
+-  --accent-orange: #ff9d5c;
+-  --accent-yellow: #fff06a;
+-  --accent-lavender: #ff2bd6;
+-  --accent-purple: #9b5cff;
++  --background: #060606;
++  --background-deep: #040404;
++  --surface: #12110e;
++  --surface-raised: #1b1712;
++  --surface-hover: #221e18;
++
++  --border: rgba(255, 239, 223, 0.14);
++  --border-subtle: rgba(255, 239, 223, 0.08);
++
++  --text-primary: #f8f0e6;
++  --text-secondary: #d8cdbb;
++  --text-muted: #8b826f;
++
++  --accent-blue: #6ea8ff;
++  --accent-green: #7fcf8b;
++  --accent-orange: #c55a2a;
++  --accent-yellow: #d6b24a;
++  --accent-lavender: #b9a2ff;
++  --accent-purple: #7d5cff;
+ 
+   --container: 1440px;
+ }
+@@ -119,7 +119,7 @@ body::before {
+   inset: 0;
+   background: radial-gradient(
+     ellipse 70% 35% at 50% -5%,
+-    color-mix(in srgb, var(--accent-lavender) 16%, transparent) 0%,
++    color-mix(in srgb, var(--accent-orange) 16%, transparent) 0%,
+     transparent 65%
+   );
+   pointer-events: none;
+@@ -131,16 +131,15 @@ body::after {
+   position: fixed;
+   inset: 0;
+   background-image:
+-    linear-gradient(rgba(255, 43, 214, 0.04) 1px, transparent 1px),
+-    linear-gradient(90deg, rgba(255, 43, 214, 0.03) 1px, transparent 1px);
+-  background-size: 88px 88px;
+-  opacity: 0.18;
+-  mix-blend-mode: screen;
++    linear-gradient(rgba(255, 239, 223, 0.03) 1px, transparent 1px),
++    linear-gradient(90deg, rgba(255, 239, 223, 0.02) 1px, transparent 1px);
++  background-size: 84px 84px;
++  opacity: 0.22;
+   pointer-events: none;
+   z-index: 0;
+ }
+ 
+-/* Blinking block cursor for boot screen and terminal block. */
++/* Reduced-motion friendly transitions. */
+ @keyframes ide-blink {
+   0%,
+   100% {
+@@ -151,16 +150,6 @@ body::after {
+   }
+ }
+ 
+-@keyframes neon-float {
+-  0%,
+-  100% {
+-    transform: translate3d(0, 0, 0);
+-  }
+-  50% {
+-    transform: translate3d(0, -12px, 0);
+-  }
+-}
+-
+ @keyframes scanline-shift {
+   0% {
+     background-position: 0 0;
+@@ -170,22 +159,8 @@ body::after {
+   }
+ }
+ 
+-.neon-text {
+-  color: var(--accent-lavender);
+-  text-shadow:
+-    0 0 10px color-mix(in srgb, var(--accent-lavender) 48%, transparent),
+-    0 0 22px color-mix(in srgb, var(--accent-lavender) 24%, transparent);
+-}
+-
+-.neon-border {
+-  border-color: color-mix(in srgb, var(--accent-lavender) 42%, var(--border));
+-  box-shadow:
+-    0 0 0 1px color-mix(in srgb, var(--accent-lavender) 14%, transparent),
+-    0 18px 44px color-mix(in srgb, var(--accent-lavender) 10%, transparent);
+-}
+-
+ .active-tab-glow {
+-  box-shadow: inset 0 1px 0 var(--accent-lavender);
++  box-shadow: inset 0 1px 0 var(--accent-orange);
+ }
+ 
+ .terminal-surface {
+@@ -194,7 +169,7 @@ body::after {
+     color-mix(in srgb, var(--surface-raised) 92%, transparent),
+     color-mix(in srgb, var(--background-deep) 96%, transparent)
+   );
+-  border: 1px solid color-mix(in srgb, var(--accent-lavender) 24%, var(--border));
++  border: 1px solid color-mix(in srgb, var(--accent-orange) 20%, var(--border));
+ }
+ 
+ .cliShell {
+diff --git a/src/app/layout.tsx b/src/app/layout.tsx
+index c2e5d88..7c0f848 100644
+--- a/src/app/layout.tsx
++++ b/src/app/layout.tsx
+@@ -2,13 +2,12 @@ import type { Metadata } from "next";
+ import { JetBrains_Mono, Manrope } from "next/font/google";
+ import "./globals.css";
+ import { ActiveSectionProvider } from "@/components/layout/active-section-provider";
+-import { BootScreen } from "@/components/layout/boot-screen";
+ import { Footer } from "@/components/layout/footer";
+ import { Navbar } from "@/components/layout/navbar";
+ import { StatusBar } from "@/components/layout/status-bar";
+ import { WorkspaceBar } from "@/components/layout/workspace-bar";
+ import { WorkspaceGutter } from "@/components/layout/workspace-gutter";
+-import { CustomCursor } from "@/components/ui/custom-cursor";
++import { IntroLoader } from "@/components/sections/intro-loader";
+ import { MotionProvider } from "@/components/motion/motion-provider";
+ import { gutterSections, siteConfig } from "@/data/portfolio";
+ import { getSiteUrl } from "@/lib/utils";
+@@ -98,8 +97,7 @@ export default function RootLayout({
+     <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+       <body>
+         <MotionProvider>
+-          <BootScreen />
+-          <CustomCursor />
++          <IntroLoader />
+           <a href="#main" className="skip-link">
+             Skip to content
+           </a>
+diff --git a/src/app/page.tsx b/src/app/page.tsx
+index 7a3d44a..dcf231a 100644
+--- a/src/app/page.tsx
++++ b/src/app/page.tsx
+@@ -1,12 +1,11 @@
+ import { ContactSection } from "@/components/sections/contact-section";
+ import { CurrentFocusSection } from "@/components/sections/current-focus-section";
+-import { EducationSection } from "@/components/sections/education-section";
+ import { ExperienceSection } from "@/components/sections/experience-section";
+ import { HeroSection } from "@/components/sections/hero-section";
+ import { IntroductionSection } from "@/components/sections/introduction-section";
+ import { ProjectsSection } from "@/components/sections/projects-section";
+ import { StackSection } from "@/components/sections/stack-section";
+-import { CodeShowcaseSection } from "@/components/sections/code-showcase-section";
++import { ArchitectureSpotlightSection } from "@/components/sections/architecture-spotlight-section";
+ import { PageShell } from "@/components/motion/page-shell";
+ 
+ export default function Home() {
+@@ -15,10 +14,9 @@ export default function Home() {
+       <HeroSection />
+       <IntroductionSection />
+       <ProjectsSection />
++      <ArchitectureSpotlightSection />
+       <StackSection />
+-      <CodeShowcaseSection />
+       <ExperienceSection />
+-      <EducationSection />
+       <CurrentFocusSection />
+       <ContactSection />
+     </PageShell>
+diff --git a/src/components/sections/contact-section.tsx b/src/components/sections/contact-section.tsx
+index 0a8144a..83b248c 100644
+--- a/src/components/sections/contact-section.tsx
++++ b/src/components/sections/contact-section.tsx
+@@ -1,13 +1,9 @@
+ import { contactConfig, siteConfig, socialLinks } from "@/data/portfolio";
+ import { SectionReveal } from "@/components/motion/section-reveal";
+-import { ApiContactPanel } from "@/components/sections/api-contact-panel";
+-import { SpringBootLog } from "@/components/sections/spring-boot-log";
+ import { Container } from "@/components/ui/container";
+-import { CodeCommentLabel } from "@/components/ui/code-comment-label";
+ import { SectionLabel } from "@/components/ui/section-label";
+ import { isPlaceholder } from "@/lib/utils";
+ 
+-/** 06 / CONTACT — API endpoint presentation with existing contact actions. */
+ export function ContactSection() {
+   const emailHref = isPlaceholder(contactConfig.email) ? null : `mailto:${contactConfig.email}`;
+   const linkedIn = socialLinks.find((link) => link.label === "LinkedIn");
+@@ -15,27 +11,49 @@ export function ContactSection() {
+ 
+   return (
+     <section id="contact" className="scroll-mt-24">
+-      <Container className="py-24 md:py-36">
+-        <SectionReveal className="space-y-5">
+-          <SectionLabel index="08" label="CONTACT" />
+-          <CodeCommentLabel>{"// contact endpoint ready"}</CodeCommentLabel>
+-          <h2 className="max-w-3xl font-display text-4xl leading-[1.08] font-bold tracking-tight text-primary sm:text-5xl md:text-6xl">
+-            Let&apos;s build something reliable.
++      <Container className="py-24 md:py-32">
++        <SectionReveal className="rounded-[1.5rem] border border-edge bg-surface/30 p-8 md:p-10">
++          <SectionLabel index="06" label="CONTACT" />
++          <h2 className="mt-6 max-w-3xl font-display text-4xl leading-[1.05] font-semibold tracking-tight text-primary sm:text-5xl">
++            {contactConfig.heading}
+           </h2>
+-          <p className="max-w-xl pt-3 leading-relaxed text-secondary">{contactConfig.body}</p>
+-        </SectionReveal>
++          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-secondary">{contactConfig.body}</p>
+ 
+-        <SectionReveal delay={0.08} className="mt-12">
+-          <SpringBootLog />
+-        </SectionReveal>
++          <div className="mt-8 flex flex-wrap gap-4">
++            {emailHref && (
++              <a href={emailHref} className="rounded-full border border-edge px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-primary transition hover:border-accent-orange hover:text-accent-orange">
++                Email
++              </a>
++            )}
++            {linkedIn && !isPlaceholder(linkedIn.href) && (
++              <a href={linkedIn.href} target="_blank" rel="noopener noreferrer" className="rounded-full border border-edge px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-secondary transition hover:border-primary hover:text-primary">
++                LinkedIn
++              </a>
++            )}
++            {gitHub && !isPlaceholder(gitHub.href) && (
++              <a href={gitHub.href} target="_blank" rel="noopener noreferrer" className="rounded-full border border-edge px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-secondary transition hover:border-primary hover:text-primary">
++                GitHub
++              </a>
++            )}
++            <a href={siteConfig.resumePath} target="_blank" rel="noopener noreferrer" className="rounded-full border border-edge px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-secondary transition hover:border-primary hover:text-primary">
++              Résumé
++            </a>
++          </div>
+ 
+-        <SectionReveal delay={0.15} className="mt-0">
+-          <ApiContactPanel
+-            emailHref={emailHref}
+-            resumePath={siteConfig.resumePath}
+-            linkedInHref={linkedIn && !isPlaceholder(linkedIn.href) ? linkedIn.href : undefined}
+-            gitHubHref={gitHub && !isPlaceholder(gitHub.href) ? gitHub.href : undefined}
+-          />
++          <div className="mt-10 grid gap-6 border-t border-edge pt-8 sm:grid-cols-3">
++            <div>
++              <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted">Email</p>
++              <p className="mt-2 text-sm text-secondary">{contactConfig.email}</p>
++            </div>
++            <div>
++              <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted">Location</p>
++              <p className="mt-2 text-sm text-secondary">Kanyakumari, Tamil Nadu, India</p>
++            </div>
++            <div>
++              <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted">Availability</p>
++              <p className="mt-2 text-sm text-secondary">Open to relevant opportunities</p>
++            </div>
++          </div>
+         </SectionReveal>
+       </Container>
+     </section>
+diff --git a/src/components/sections/current-focus-section.tsx b/src/components/sections/current-focus-section.tsx
+index 66b096e..a4f8b8a 100644
+--- a/src/components/sections/current-focus-section.tsx
++++ b/src/components/sections/current-focus-section.tsx
+@@ -1,13 +1,8 @@
+ import { focusItems } from "@/data/portfolio";
+ import { SectionReveal } from "@/components/motion/section-reveal";
+-import { FocusItems } from "@/components/sections/focus-items";
+ import { Container } from "@/components/ui/container";
+ import { SectionLabel } from "@/components/ui/section-label";
+ 
+-/**
+- * 05 / CURRENT FOCUS — staggered terminal-output rows via FocusItems.
+- * Markers flicker once on entry; rows reveal with stagger.
+- */
+ export function CurrentFocusSection() {
+   return (
+     <section id="focus" className="scroll-mt-24">
+@@ -15,11 +10,21 @@ export function CurrentFocusSection() {
+         <SectionReveal className="mb-12 space-y-5 md:mb-16">
+           <SectionLabel index="07" label="CURRENT FOCUS" />
+           <h2 className="font-display text-3xl font-semibold tracking-tight text-primary md:text-4xl">
+-            What I am sharpening right now.
++            Keeping the fundamentals sharp while scaling up.
+           </h2>
+         </SectionReveal>
+ 
+-        <FocusItems items={focusItems} />
++        <SectionReveal>
++          <div className="grid gap-4 md:grid-cols-2">
++            {focusItems.map((item) => (
++              <div key={item.title} className="rounded-[1rem] border border-edge bg-surface/30 p-5">
++                <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-accent-orange">{item.index}</p>
++                <p className="mt-3 text-lg text-primary">{item.title}</p>
++                <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted">{item.status}</p>
++              </div>
++            ))}
++          </div>
++        </SectionReveal>
+       </Container>
+     </section>
+   );
+diff --git a/src/components/sections/experience-section.tsx b/src/components/sections/experience-section.tsx
+index 232785b..e34b060 100644
+--- a/src/components/sections/experience-section.tsx
++++ b/src/components/sections/experience-section.tsx
+@@ -1,107 +1,7 @@
+-"use client";
+-
+-import { useState } from "react";
+-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+ import { experience } from "@/data/portfolio";
+-import type { ExperienceModule } from "@/types/portfolio";
+ import { SectionReveal } from "@/components/motion/section-reveal";
+ import { Container } from "@/components/ui/container";
+-import { CodeCommentLabel } from "@/components/ui/code-comment-label";
+ import { SectionLabel } from "@/components/ui/section-label";
+-import { tokenizeJavaLine } from "@/lib/java-tokenizer";
+-import { cn } from "@/lib/utils";
+-
+-function ModuleCard({ module, index }: { module: ExperienceModule; index: number }) {
+-  const [open, setOpen] = useState(false);
+-  const shouldReduceMotion = useReducedMotion();
+-  const hasCode = Boolean(module.codeSnippet?.length);
+-
+-  return (
+-    <SectionReveal delay={index * 0.06}>
+-      <div
+-        className={cn(
+-          "overflow-hidden rounded-[0.6rem] border border-edge-subtle bg-surface/20 transition-all duration-200",
+-          "hover:border-edge hover:bg-surface/35 hover:-translate-y-px",
+-          open && "border-accent-lavender/35",
+-        )}
+-      >
+-        <button
+-          type="button"
+-          onClick={() => hasCode && setOpen((o) => !o)}
+-          aria-expanded={hasCode ? open : undefined}
+-          className={cn(
+-            "flex w-full items-start justify-between gap-4 px-4 py-3.5 text-left",
+-            hasCode && "cursor-pointer",
+-          )}
+-        >
+-          <div className="min-w-0">
+-            <h4 className="font-mono text-[12px] font-semibold tracking-[0.04em] text-primary uppercase">
+-              {module.title}
+-            </h4>
+-            <p className="mt-1.5 text-[13px] leading-relaxed text-secondary/85">
+-              {module.description}
+-            </p>
+-            <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1">
+-              {module.stack.map((s) => (
+-                <span key={s} className="font-mono text-[9px] tracking-[0.06em] text-muted/60">
+-                  {s}
+-                </span>
+-              ))}
+-            </div>
+-          </div>
+-
+-          {hasCode && (
+-            <span
+-              aria-hidden="true"
+-              className={cn(
+-                "mt-1 shrink-0 font-mono text-[10px] text-muted/50 transition-transform duration-200",
+-                open && "rotate-180",
+-              )}
+-            >
+-              ▾
+-            </span>
+-          )}
+-        </button>
+-
+-        <AnimatePresence initial={false}>
+-          {open && hasCode && (
+-            <motion.div
+-              initial={{ height: 0, opacity: 0 }}
+-              animate={{ height: "auto", opacity: 1 }}
+-              exit={{ height: 0, opacity: 0 }}
+-              transition={{ duration: shouldReduceMotion ? 0 : 0.22, ease: "easeOut" }}
+-              className="overflow-hidden border-t border-edge-subtle"
+-            >
+-              <div
+-                className="code-scroll overflow-auto bg-background-deep px-4 py-3"
+-                style={{ maxHeight: 220 }}
+-              >
+-                <p className="mb-2 font-mono text-[9px] tracking-[0.1em] text-muted/50 uppercase">
+-                  {module.codeFile}
+-                </p>
+-                <pre className="font-mono text-[11px] leading-[1.7]">
+-                  {module.codeSnippet!.map((line, li) => (
+-                    <div key={li}>
+-                      {line === "" ? (
+-                        <>&nbsp;</>
+-                      ) : (
+-                        tokenizeJavaLine(line).map((t, ti) => (
+-                          <span key={ti} className={t.cls}>
+-                            {t.text}
+-                          </span>
+-                        ))
+-                      )}
+-                    </div>
+-                  ))}
+-                </pre>
+-              </div>
+-            </motion.div>
+-          )}
+-        </AnimatePresence>
+-      </div>
+-    </SectionReveal>
+-  );
+-}
+ 
+ export function ExperienceSection() {
+   return (
+@@ -109,81 +9,61 @@ export function ExperienceSection() {
+       <Container className="py-20 md:py-28">
+         <SectionReveal className="mb-12 space-y-5 md:mb-16">
+           <SectionLabel index="05" label="EXPERIENCE" />
+-          <CodeCommentLabel>{"// experience loaded"}</CodeCommentLabel>
+           <h2 className="font-display text-3xl font-semibold tracking-tight text-primary md:text-4xl">
+-            Experience
++            Working at the edge of enterprise workflows and backend reliability.
+           </h2>
+         </SectionReveal>
+ 
+-        {experience.map((entry) => (
+-          <div
+-            key={`${entry.company}-${entry.startDate}`}
+-            className="grid gap-10 lg:grid-cols-12 lg:gap-8"
+-          >
+-            {/* ── Timeline ── */}
+-            <SectionReveal className="lg:col-span-3">
+-              <div className="lg:sticky lg:top-28">
+-                <div className="flex items-center gap-3">
+-                  <span
+-                    aria-hidden="true"
+-                    className="h-2.5 w-2.5 rounded-full bg-accent-lavender shadow-[0_0_8px_var(--accent-lavender)]"
+-                  />
+-                  <span className="font-mono text-[11px] text-secondary">{entry.startDate}</span>
+-                </div>
+-                <div className="ml-[4.5px] border-l border-edge pl-[1.4rem] py-2.5">
+-                  <p className="font-mono text-[10px] text-muted">Joined {entry.company}</p>
+-                </div>
+-                <div className="flex items-center gap-3">
+-                  <span
+-                    aria-hidden="true"
+-                    className="h-2.5 w-2.5 rounded-full bg-accent-green shadow-[0_0_8px_var(--accent-green)]"
+-                  />
+-                  <span className="font-mono text-[11px] text-secondary">{entry.endDate}</span>
+-                </div>
+-
+-                <div className="mt-6 space-y-1 border-t border-edge-subtle pt-5">
+-                  <p className="font-mono text-[11px] tracking-[0.1em] text-primary uppercase">
+-                    {entry.company}
+-                  </p>
+-                  <p className="text-sm text-secondary">{entry.role}</p>
+-                  <p className="font-mono text-[10px] text-muted">
+-                    {entry.startDate} – {entry.endDate}
+-                  </p>
+-                  <p className="font-mono text-[10px] text-muted">{entry.location}</p>
++        <div className="space-y-10">
++          {experience.map((entry) => (
++            <SectionReveal key={`${entry.company}-${entry.startDate}`}>
++              <div className="rounded-[1.25rem] border border-edge bg-surface/30 p-8 md:p-10">
++                <div className="flex flex-col gap-6 lg:flex-row lg:justify-between">
++                  <div>
++                    <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-accent-orange">
++                      {entry.startDate} — {entry.endDate}
++                    </p>
++                    <h3 className="mt-3 font-display text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
++                      {entry.role}
++                    </h3>
++                    <p className="mt-2 text-lg text-secondary">{entry.company}</p>
++                    <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
++                      {entry.location}
++                    </p>
++                  </div>
++                  <div className="max-w-2xl">
++                    <p className="text-base leading-relaxed text-secondary">{entry.summary}</p>
++                    <div className="mt-4 flex flex-wrap gap-2">
++                      {entry.techTags.map((tag) => (
++                        <span key={tag} className="rounded-full border border-edge px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-secondary">
++                          {tag}
++                        </span>
++                      ))}
++                    </div>
++                  </div>
+                 </div>
+-              </div>
+-            </SectionReveal>
+-
+-            {/* ── Content ── */}
+-            <div className="lg:col-span-9">
+-              <SectionReveal>
+-                <h3 className="font-display text-2xl font-semibold tracking-tight text-primary md:text-3xl">
+-                  {entry.title}
+-                </h3>
+-                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-secondary md:text-base">
+-                  {entry.summary}
+-                </p>
+ 
+-                <div className="mt-5 flex flex-wrap gap-1.5">
+-                  {entry.techTags.map((tag) => (
+-                    <span
+-                      key={tag}
+-                      className="rounded-[0.3rem] border border-edge-subtle bg-surface/40 px-2 py-1 font-mono text-[10px] tracking-[0.04em] text-secondary/80"
+-                    >
+-                      {tag}
+-                    </span>
++                <div className="mt-8 grid gap-4 lg:grid-cols-2">
++                  {entry.modules.map((module) => (
++                    <div key={module.title} className="rounded-[0.9rem] border border-edge-subtle bg-background/70 p-5">
++                      <h4 className="font-mono text-[11px] uppercase tracking-[0.2em] text-primary">
++                        {module.title}
++                      </h4>
++                      <p className="mt-3 text-sm leading-relaxed text-secondary">{module.description}</p>
++                      <div className="mt-4 flex flex-wrap gap-2">
++                        {module.stack.map((tool) => (
++                          <span key={tool} className="font-mono text-[9px] uppercase tracking-[0.16em] text-muted">
++                            {tool}
++                          </span>
++                        ))}
++                      </div>
++                    </div>
+                   ))}
+                 </div>
+-              </SectionReveal>
+-
+-              <div className="mt-8 space-y-3">
+-                {entry.modules.map((module, i) => (
+-                  <ModuleCard key={module.title} module={module} index={i} />
+-                ))}
+               </div>
+-            </div>
+-          </div>
+-        ))}
++            </SectionReveal>
++          ))}
++        </div>
+       </Container>
+     </section>
+   );
+diff --git a/src/components/sections/hero-section.tsx b/src/components/sections/hero-section.tsx
+index ae9e575..c8d4be4 100644
+--- a/src/components/sections/hero-section.tsx
++++ b/src/components/sections/hero-section.tsx
+@@ -1,176 +1,92 @@
+ import { siteConfig, socialLinks } from "@/data/portfolio";
+-import { SpConsole } from "@/components/hero/sp-console";
+ import { FadeUp } from "@/components/motion/fade-up";
+-import { TextReveal } from "@/components/motion/text-reveal";
+-import { Breadcrumb } from "@/components/ui/breadcrumb";
+ import { Container } from "@/components/ui/container";
+ import { TextLink } from "@/components/ui/text-link";
+-import { cn, isPlaceholder } from "@/lib/utils";
+-
+-const STATEMENT_LINES = ["01", "02", "03"];
+-
+-const SPECIALTY_CARDS = [
+-  {
+-    label: "Backend Systems",
+-    detail: "Spring Boot · SQL · transactions",
+-    dot: "bg-accent-orange shadow-[0_0_5px_var(--accent-orange)]",
+-  },
+-  {
+-    label: "REST APIs",
+-    detail: "Clean endpoints · integrations",
+-    dot: "bg-accent-blue shadow-[0_0_5px_var(--accent-blue)]",
+-  },
+-  {
+-    label: "Workflow Apps",
+-    detail: "Approvals · validations · status flow",
+-    dot: "bg-accent-green shadow-[0_0_5px_var(--accent-green)]",
+-  },
+-] as const;
+-
+-const ARCH_FLOW = [
+-  { label: "Next.js Client", accent: false },
+-  { label: "REST API", accent: true },
+-  { label: "Service Layer", accent: true },
+-  { label: "SQL Database", accent: false },
+-] as const;
++import { isPlaceholder } from "@/lib/utils";
+ 
+ export function HeroSection() {
+   const visibleSocials = socialLinks.filter((link) => !isPlaceholder(link.href));
+ 
+   return (
+-    <section id="intro" className="relative flex min-h-[calc(100svh-5.25rem)] flex-col">
+-      {/*
+-        Grid: left column fills remaining space, right column capped at 420px.
+-        Items align to start on lg so a tall left column does not push JShell off-screen;
+-        on xl there is usually enough room to center both columns.
+-        Bottom padding (pb-16) ensures content clears the fixed status bar (h-7 = 28px).
+-      */}
+-      <Container className="relative z-10 grid flex-1 grid-cols-1 items-start gap-8 py-10 pb-16 lg:grid-cols-[1fr_minmax(0,420px)] lg:items-center lg:gap-10 lg:py-12 xl:items-center">
+-
+-        {/* ── Left column ── */}
++    <section id="intro" className="relative flex min-h-[calc(100svh-5.75rem)] flex-col border-b border-edge bg-[var(--background)]">
++      <Container className="relative z-10 grid flex-1 grid-cols-1 gap-10 py-16 pb-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-20">
+         <div className="flex flex-col justify-start">
+           <FadeUp delay={0} y={8}>
+-            <Breadcrumb segments={["src", "portfolio", "Sivapunithan.java"]} />
+-            <p className="mt-4 font-mono text-[11px] tracking-[0.22em] text-muted uppercase">
++            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-accent-orange">
+               {siteConfig.role}
+             </p>
++            <h1 className="mt-5 max-w-4xl font-display text-4xl font-semibold leading-[0.95] tracking-[-0.03em] text-primary sm:text-5xl md:text-6xl lg:text-7xl">
++              I build reliable backend systems and the interfaces that operate them.
++            </h1>
+           </FadeUp>
+ 
+-          <h1 className="mt-4 font-display text-[2.4rem] font-bold leading-[1.04] tracking-tight text-primary sm:text-5xl md:text-6xl xl:text-7xl">
+-            <TextReveal delay={0.1}>Sivapunithan S.</TextReveal>
+-          </h1>
+-
+-          {/* Statement with line-number gutter */}
+-          <FadeUp delay={0.32} className="mt-6 max-w-xl">
+-            <div className="flex gap-5 border-l border-accent-lavender/40 pl-5 sm:gap-6 sm:pl-6">
+-              <div
+-                aria-hidden="true"
+-                className="hidden flex-col gap-2 pt-1 select-none font-mono text-[10px] leading-relaxed text-accent-lavender/70 sm:flex"
+-              >
+-                {STATEMENT_LINES.map((line) => (
+-                  <span key={line}>{line}</span>
+-                ))}
+-              </div>
+-              <div className="space-y-3">
+-                <p className="text-base leading-relaxed text-primary sm:text-lg md:text-xl">
+-                  I build reliable systems where backend logic, data, and business workflows meet.
+-                </p>
+-                <p className="font-mono text-xs tracking-wide text-muted">
+-                  <span className="text-accent-orange">Java</span> · Spring Boot · SQL · Next.js ·
+-                  TypeScript
+-                </p>
+-              </div>
+-            </div>
++          <FadeUp delay={0.16} className="mt-8 max-w-2xl">
++            <p className="text-lg leading-relaxed text-secondary sm:text-xl">
++              Java and Spring Boot engineer working across APIs, enterprise workflows, SQL and Next.js applications.
++            </p>
+           </FadeUp>
+ 
+-          {/* Specialty cards */}
+-          <FadeUp delay={0.5} className="mt-5">
+-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+-              {SPECIALTY_CARDS.map((card) => (
+-                <div
+-                  key={card.label}
+-                  className="rounded-[0.5rem] border border-edge-subtle bg-surface/30 px-3 py-2.5 transition-colors duration-200 hover:border-edge hover:bg-surface/50"
+-                >
+-                  <div className="flex items-center gap-2">
+-                    <span
+-                      aria-hidden="true"
+-                      className={cn("h-1.5 w-1.5 shrink-0 rounded-full", card.dot)}
+-                    />
+-                    <span className="font-mono text-[11px] font-medium text-primary">
+-                      {card.label}
+-                    </span>
+-                  </div>
+-                  <p className="mt-1 pl-[18px] font-mono text-[10px] leading-relaxed text-muted/65">
+-                    {card.detail}
+-                  </p>
+-                </div>
+-              ))}
+-            </div>
++          <FadeUp delay={0.24} className="mt-10 flex flex-wrap items-center gap-4">
++            <a
++              href="#work"
++              className="rounded-full border border-edge px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-primary transition hover:border-accent-orange hover:text-accent-orange"
++            >
++              View my work
++            </a>
++            <a
++              href={siteConfig.resumePath}
++              className="rounded-full border border-edge px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-secondary transition hover:border-primary hover:text-primary"
++            >
++              Résumé
++            </a>
+           </FadeUp>
+ 
+-          {/* CTAs + socials */}
+-          <FadeUp delay={0.65} className="mt-6">
+-            <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
+-              <TextLink href="#work" mono arrow className="text-primary">
+-                View selected work
+-              </TextLink>
+-              <TextLink href={siteConfig.resumePath} mono arrow external>
+-                Download résumé
+-              </TextLink>
++          <FadeUp delay={0.32} className="mt-10 space-y-5 border-t border-edge pt-8">
++            <div className="flex flex-wrap items-center gap-6">
++              <div>
++                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">Name</p>
++                <p className="mt-2 text-lg text-primary">Sivapunithan S</p>
++              </div>
++              <div>
++                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">Role</p>
++                <p className="mt-2 text-lg text-primary">Java Backend Engineer</p>
++              </div>
++              <div>
++                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">Location</p>
++                <p className="mt-2 text-lg text-primary">Kanyakumari, Tamil Nadu, India</p>
++              </div>
+             </div>
+ 
+-            {visibleSocials.length > 0 && (
+-              <ul className="mt-5 flex flex-wrap items-center gap-5">
+-                {visibleSocials.map((link) => (
+-                  <li key={link.label}>
+-                    <TextLink
+-                      href={link.href}
+-                      external={!link.href.startsWith("mailto:")}
+-                      className="text-sm text-muted hover:text-secondary"
+-                    >
+-                      {link.label}
+-                    </TextLink>
+-                  </li>
+-                ))}
+-              </ul>
+-            )}
+-          </FadeUp>
+-
+-          {/* Architecture flow + scroll hint */}
+-          <FadeUp delay={0.82} className="mt-6">
+-            <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
+-              {ARCH_FLOW.map((step, i) => (
+-                <span key={step.label} className="flex items-center gap-1.5">
+-                  <span
+-                    className={cn(
+-                      "font-mono text-[10px]",
+-                      step.accent ? "text-accent-orange/65" : "text-muted/45",
+-                    )}
+-                  >
+-                    {step.label}
+-                  </span>
+-                  {i < ARCH_FLOW.length - 1 && (
+-                    <span aria-hidden="true" className="font-mono text-[10px] text-muted/28">
+-                      →
+-                    </span>
+-                  )}
+-                </span>
++            <div className="flex flex-wrap items-center gap-5">
++              {visibleSocials.map((link) => (
++                <TextLink key={link.label} href={link.href} mono external className="text-[11px] text-muted hover:text-primary">
++                  {link.label}
++                </TextLink>
+               ))}
+             </div>
+-            <p className="mt-4 font-mono text-[10px] tracking-[0.28em] text-muted/40 uppercase">
+-              Scroll to explore
+-            </p>
+           </FadeUp>
+         </div>
+ 
+-        {/* ── Right column — JShell ── */}
+-        <div className="relative w-full lg:self-start xl:self-auto">
+-          <div
+-            aria-hidden="true"
+-            className="pointer-events-none absolute -inset-6 -z-10 rounded-[2rem] bg-accent-lavender/[0.03] blur-3xl"
+-          />
+-          <SpConsole />
+-        </div>
++        <FadeUp delay={0.2} className="relative">
++          <div className="aspect-[4/5] overflow-hidden rounded-[1.5rem] border border-edge bg-[linear-gradient(135deg,var(--surface),var(--background-deep))] p-6 sm:p-8">
++            <div className="flex h-full flex-col justify-between rounded-[1rem] border border-edge-subtle bg-[var(--background)]/80 p-6">
++              <div className="space-y-4">
++                <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-accent-orange">
++                  Portrait slot
++                </p>
++                <div className="h-64 rounded-[1rem] border border-dashed border-edge-subtle bg-[radial-gradient(circle_at_top_left,var(--surface-raised),transparent_70%)]" />
++              </div>
++              <div className="space-y-2">
++                <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted">
++                  Required asset
++                </p>
++                <p className="text-sm leading-relaxed text-secondary">
++                  A transparent PNG or WebP waist-up portrait with a natural edit, high resolution and a 4:5 aspect ratio.
++                </p>
++              </div>
++            </div>
++          </div>
++        </FadeUp>
+       </Container>
+     </section>
+   );
+diff --git a/src/components/sections/introduction-section.tsx b/src/components/sections/introduction-section.tsx
+index fc685a4..be46cf8 100644
+--- a/src/components/sections/introduction-section.tsx
++++ b/src/components/sections/introduction-section.tsx
+@@ -1,35 +1,30 @@
+ import { SectionReveal } from "@/components/motion/section-reveal";
+-import { Breadcrumb } from "@/components/ui/breadcrumb";
+ import { Container } from "@/components/ui/container";
+-import { Divider } from "@/components/ui/divider";
+ import { SectionLabel } from "@/components/ui/section-label";
+ 
+-/** 01 / INTRODUCTION — two-column editorial layout, no cards, no icons. */
+ export function IntroductionSection() {
+   return (
+     <section id="about" className="scroll-mt-24">
+       <Container className="py-20 md:py-28">
+         <SectionReveal>
+-          <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
+-            <div className="space-y-4 lg:col-span-3">
++          <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-14">
++            <div className="space-y-4">
+               <SectionLabel index="01" label="INTRODUCTION" />
+-              <Breadcrumb segments={["core", "about"]} className="text-muted/70" />
++              <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-muted">
++                Backend systems, presented with editorial impact.
++              </p>
+             </div>
+ 
+-            <div className="lg:col-span-8 lg:col-start-5">
+-              <h2 className="font-display text-2xl leading-snug font-semibold tracking-tight text-primary sm:text-3xl md:text-4xl">
+-                I care about the invisible parts of software — APIs, data flows, validations,
+-                persistence, and the business rules that make products reliable.
++            <div className="space-y-6">
++              <h2 className="font-display text-3xl leading-tight font-semibold tracking-tight text-primary sm:text-4xl md:text-5xl">
++                I work where business workflows, backend logic and data integrity meet.
+               </h2>
+-              <p className="mt-8 max-w-2xl leading-relaxed text-secondary">
+-                I am a backend-focused full-stack developer working with Java, Spring Boot, SQL,
+-                Next.js, and TypeScript. I enjoy debugging complex workflows, designing practical
+-                APIs, and building maintainable software that solves real operational problems.
++              <p className="max-w-2xl text-lg leading-relaxed text-secondary">
++                My work spans Java and Spring Boot development, REST APIs, enterprise workflows, Oracle SQL and MySQL, production debugging, and Next.js plus TypeScript integration.
+               </p>
+             </div>
+           </div>
+         </SectionReveal>
+-        <Divider subtle className="mt-20 md:mt-28" />
+       </Container>
+     </section>
+   );
+diff --git a/src/components/sections/projects-section.tsx b/src/components/sections/projects-section.tsx
+index e1ddc83..998ffac 100644
+--- a/src/components/sections/projects-section.tsx
++++ b/src/components/sections/projects-section.tsx
+@@ -1,28 +1,32 @@
++import Link from "next/link";
+ import { projects } from "@/data/portfolio";
+ import { SectionReveal } from "@/components/motion/section-reveal";
+ import { ProjectFeature } from "@/components/project/project-feature";
+ import { Container } from "@/components/ui/container";
+-import { CodeCommentLabel } from "@/components/ui/code-comment-label";
+ import { SectionLabel } from "@/components/ui/section-label";
+ 
+-/** 02 / SELECTED WORK — editorial project rows, no card grid. */
+ export function ProjectsSection() {
+   return (
+     <section id="work" className="scroll-mt-24">
+       <Container className="pb-10 md:pb-14">
+         <SectionReveal className="mb-12 space-y-5 md:mb-16">
+           <SectionLabel index="02" label="SELECTED WORK" />
+-          <CodeCommentLabel>{"// projects compiled"}</CodeCommentLabel>
+-          <h2 className="max-w-xl font-display text-3xl font-semibold tracking-tight text-primary md:text-4xl">
+-            Work that favours reliability over decoration.
++          <h2 className="max-w-2xl font-display text-3xl font-semibold tracking-tight text-primary md:text-4xl">
++            Systems thinking, production discipline and clear technical choices.
+           </h2>
+         </SectionReveal>
+ 
+-        <div>
++        <div className="space-y-6">
+           {projects.map((project) => (
+             <ProjectFeature key={project.slug} project={project} />
+           ))}
+         </div>
++
++        <SectionReveal className="mt-8 flex justify-start">
++          <Link href="/projects/enterprise-procurement-workflow" className="font-mono text-[11px] uppercase tracking-[0.24em] text-accent-orange transition hover:text-primary">
++            Open the case study route →
++          </Link>
++        </SectionReveal>
+       </Container>
+     </section>
+   );
+diff --git a/src/components/sections/stack-section.tsx b/src/components/sections/stack-section.tsx
+index b0595ea..1c304b8 100644
+--- a/src/components/sections/stack-section.tsx
++++ b/src/components/sections/stack-section.tsx
+@@ -1,12 +1,9 @@
+ import type { AccentTone } from "@/types/portfolio";
+ import { stackGroups } from "@/data/portfolio";
+ import { SectionReveal } from "@/components/motion/section-reveal";
+-import { AnimatedSkillCard } from "@/components/sections/animated-skill-card";
+ import { Container } from "@/components/ui/container";
+-import { CodeCommentLabel } from "@/components/ui/code-comment-label";
+ import { SectionLabel } from "@/components/ui/section-label";
+ 
+-/** Only the category index takes an accent — items stay neutral. */
+ const INDEX_TONE: Record<AccentTone, string> = {
+   blue: "text-accent-blue",
+   green: "text-accent-green",
+@@ -16,39 +13,30 @@ const INDEX_TONE: Record<AccentTone, string> = {
+   neutral: "text-secondary",
+ };
+ 
+-/**
+- * 03 / STACK — typographic grid inspired by an IDE settings panel.
+- * Thin separators between rows, no cards, no icons, no logos,
+- * no pills, no percentages.
+- */
+ export function StackSection() {
+   return (
+     <section id="stack" className="scroll-mt-24">
+       <Container className="py-20 md:py-28">
+         <SectionReveal className="mb-12 space-y-5 md:mb-16">
+-          <SectionLabel index="03" label="STACK" />
+-          <CodeCommentLabel>{"// skills indexed"}</CodeCommentLabel>
++          <SectionLabel index="04" label="STACK" />
+           <h2 className="font-display text-3xl font-semibold tracking-tight text-primary md:text-4xl">
+-            Tools I work with daily.
++            Focused on the tools that hold backend systems together.
+           </h2>
+         </SectionReveal>
+ 
+         <SectionReveal>
+-          <div className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
++          <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-5">
+             {stackGroups.map((group) => (
+-              <div
+-                key={group.title}
+-                className="terminal-surface transition duration-200 hover:neon-border"
+-              >
+-                <div className="border-b border-edge-subtle px-4 py-3">
+-                  <p className="font-mono text-[11px] tracking-[0.18em]">
+-                    <span className={INDEX_TONE[group.accent]}>{group.index}</span>
+-                    <span className="ml-3 text-primary">{group.title}</span>
+-                  </p>
+-                </div>
+-                <ul className="px-4 py-2">
+-                  {group.items.map((item, index) => (
+-                    <AnimatedSkillCard key={item} item={item} index={index} />
++              <div key={group.title} className="rounded-[1rem] border border-edge bg-surface/30 p-5">
++                <p className="font-mono text-[11px] tracking-[0.2em]">
++                  <span className={INDEX_TONE[group.accent]}>{group.index}</span>
++                  <span className="ml-3 text-primary">{group.title}</span>
++                </p>
++                <ul className="mt-5 space-y-2.5">
++                  {group.items.map((item) => (
++                    <li key={item} className="text-sm leading-relaxed text-secondary">
++                      {item}
++                    </li>
+                   ))}
+                 </ul>
+               </div>
+diff --git a/src/data/portfolio.ts b/src/data/portfolio.ts
+index 4fec187..e7323b7 100644
+--- a/src/data/portfolio.ts
++++ b/src/data/portfolio.ts
+@@ -27,10 +27,10 @@ import type {
+ export const siteConfig: SiteConfig = {
+   name: "Sivapunithan S",
+   brandMark: "SP",
+-  role: "Java Developer · Spring Boot · Full-Stack",
+-  description: "Java, Spring Boot, SQL, and backend-focused full-stack developer portfolio.",
++  role: "Java / Spring Boot / Systems",
++  description: "Backend-focused software engineer building reliable Java systems, APIs, and workflows.",
+   domain: "sivapunithan.in",
+-  workspaceBreadcrumb: ["portfolio", "sivapunithan-s", "java-developer"],
++  workspaceBreadcrumb: ["portfolio", "sivapunithan-s", "backend-engineer"],
+   availability: "OPEN TO OPPORTUNITIES",
+   resumePath: "/resume.pdf",
+ };
+@@ -38,10 +38,9 @@ export const siteConfig: SiteConfig = {
+ export const navigation: NavItem[] = [
+   { label: "About", href: "#about" },
+   { label: "Work", href: "#work" },
+-  { label: "Stack", href: "#stack" },
+-  { label: "Code", href: "#code" },
++  { label: "Architecture", href: "#architecture" },
+   { label: "Experience", href: "#experience" },
+-  { label: "Education", href: "#education" },
++  { label: "Stack", href: "#stack" },
+   { label: "Contact", href: "#contact" },
+ ];
+ 
+@@ -65,102 +64,69 @@ export const socialLinks: SocialLink[] = [
+ export const projects: Project[] = [
+   {
+     index: "01",
+-    slug: "library-management-system",
+-    title: "Library Management System",
+-    category: "FULL-STACK APPLICATION",
++    slug: "enterprise-procurement-workflow",
++    title: "Enterprise Procurement Workflow",
++    category: "ANONYMISED ENTERPRISE WORK",
+     summary:
+-      "A role-based platform with separate administrative and user workflows for managing books, authors, publishers, lending, and returns.",
+-    stack: ["Java", "Spring Boot", "MySQL", "Next.js", "TypeScript"],
+-    highlightsLabel: "HIGHLIGHTS",
++      "A backend-heavy procurement platform where approvals, persistence issues, and workflow visibility had to be corrected without exposing confidential business details.",
++    stack: ["Java", "Spring Boot", "Oracle SQL", "Next.js", "TypeScript"],
++    highlightsLabel: "ENGINEERING FOCUS",
+     highlights: [
+-      "Designed and integrated REST API workflows",
+-      "Implemented role-aware navigation and access handling",
+-      "Built lending and return flows",
+-      "Resolved authentication, CORS, and UI-state issues",
+-    ],
+-    status: { label: "COMPLETED LEARNING PROJECT", tone: "green" },
+-    links: [
+-      { label: "Repository", href: "[ADD PROJECT REPOSITORY URL]" },
+-      { label: "Live demo", href: "[ADD LIVE DEMO URL]" },
++      "Investigated approval-state handling across procurement and GRN workflows",
++      "Resolved persistence and validation issues affecting workflow behaviour",
++      "Integrated backend APIs with frontend approval screens and data entry flows",
++      "Worked across production debugging and enterprise application reliability",
+     ],
+-    image: { src: "[ADD PROJECT SCREENSHOT]", alt: "Library Management System interface" },
+-    layout: "imageLeft",
+-    confidential: false,
+-    accent: "blue",
++    status: { label: "ANONYMISED CASE STUDY", tone: "neutral" },
++    links: [],
++    image: { src: "[ADD PROJECT SCREENSHOT]", alt: "Enterprise procurement workflow case study" },
++    layout: "wide",
++    confidential: true,
++    accent: "orange",
+   },
+   {
+     index: "02",
+-    slug: "movie-ticket-booking-application",
+-    title: "Movie Ticket Booking Application",
+-    category: "BACKEND APPLICATION",
++    slug: "concurrent-movie-booking-system",
++    title: "Concurrent Movie Booking System",
++    category: "BACKEND SYSTEM",
+     summary:
+-      "A backend-focused booking system with concurrent seat reservation, transaction safety via optimistic locking, and rollback handling for simultaneous booking requests.",
++      "A backend-focused booking system designed around concurrency control, transaction integrity, optimistic locking, and rollback behaviour under simultaneous requests.",
+     stack: ["Java", "Spring Boot", "JPA", "MySQL", "REST APIs"],
+-    highlightsLabel: "HIGHLIGHTS",
++    highlightsLabel: "ENGINEERING FOCUS",
+     highlights: [
+-      "Implemented optimistic locking using JPA @Version fields to prevent double-booking under concurrent requests",
+-      "Built REST API endpoints for seat selection, booking confirmation, and real-time availability with rollback handling",
+-      "Designed data models for movies, screens, showtimes, seats, and bookings to support the full booking workflow",
+-      "Tested multi-threaded booking scenarios to verify concurrency control under simultaneous load",
+-      "Structured application as a realistic backend-heavy project focused on data integrity and concurrent access",
++      "Implemented optimistic locking to prevent double-booking under concurrent requests",
++      "Modelled transactional booking flows with rollback-safe state updates",
++      "Validated concurrency behaviour through repeatable high-contention scenarios",
++      "Prioritised consistency over delivery speed in a backend-heavy project",
+     ],
+     status: { label: "IN DEVELOPMENT", tone: "yellow" },
+     links: [{ label: "Repository", href: "[ADD PROJECT REPOSITORY URL]" }],
+-    image: { src: "[ADD PROJECT SCREENSHOT]", alt: "Movie Ticket Booking Application interface" },
++    image: { src: "[ADD PROJECT SCREENSHOT]", alt: "Concurrent booking system architecture" },
+     layout: "imageRight",
+     confidential: false,
+     accent: "green",
+   },
+   {
+     index: "03",
+-    slug: "java-backend-engineering-lab",
+-    title: "Java Backend Engineering Lab",
+-    category: "ENGINEERING PRACTICE",
++    slug: "library-management-platform",
++    title: "Library Management Platform",
++    category: "FULL-STACK APPLICATION",
+     summary:
+-      "A structured repository for learning backend fundamentals beyond basic CRUD applications.",
+-    stack: ["Java", "SQL", "Git"],
+-    highlightsLabel: "HIGHLIGHTS",
++      "A role-based library platform that connects Spring Boot services, Next.js interfaces, authentication, and lending workflows in a single product experience.",
++    stack: ["Java", "Spring Boot", "MySQL", "Next.js", "TypeScript"],
++    highlightsLabel: "ENGINEERING FOCUS",
+     highlights: [
+-      "Java concurrency exercises",
+-      "Networking experiments",
+-      "Echo-server implementation",
+-      "SQL practice",
+-      "Technical notes and observations",
++      "Built role-aware application flows for administration and end-user actions",
++      "Connected backend APIs with Next.js interfaces for lending and return operations",
++      "Handled authentication, authorisation and workflow state in a cohesive stack",
++      "Used the project to strengthen full-stack integration and backend reliability",
+     ],
+-    status: { label: "ONGOING", tone: "blue" },
++    status: { label: "COMPLETED LEARNING PROJECT", tone: "blue" },
+     links: [{ label: "Repository", href: "[ADD PROJECT REPOSITORY URL]" }],
+-    image: { src: "[ADD PROJECT SCREENSHOT]", alt: "Java Backend Engineering Lab" },
+-    layout: "wide",
++    image: { src: "[ADD PROJECT SCREENSHOT]", alt: "Library management platform interface" },
++    layout: "imageLeft",
+     confidential: false,
+-    accent: "orange",
+-  },
+-  {
+-    index: "04",
+-    slug: "procurement-workflow-case-study",
+-    title: "Procurement Workflow Case Study",
+-    category: "ANONYMISED ENTERPRISE WORK",
+-    summary:
+-      "A sanitised case study covering workflow debugging, persistence fixes, approval-state handling, calculation corrections, and frontend-backend integration.",
+-    stack: ["Java", "Spring Boot", "Oracle SQL", "ServiceNow", "Next.js"],
+-    highlightsLabel: "HIGHLIGHTS",
+-    highlights: [
+-      "Debugged and resolved approval-flow issues across purchase request and GRN workflows",
+-      "Fixed database-persistence problems including duplicate invoice checks and financial-calculation errors",
+-      "Identified and corrected role-based task-visibility gaps across requester, approver, and finance stages",
+-      "Integrated frontend approval dashboards and procurement forms with backend Java and Spring Boot APIs",
+-      "Worked across Oracle SQL queries, ServiceNow asset records, and Next.js pages in a production-style enterprise codebase",
+-    ],
+-    status: { label: "ANONYMISED CASE STUDY", tone: "neutral" },
+-    links: [],
+-    image: { src: "[ADD PROJECT SCREENSHOT]", alt: "Procurement workflow case study" },
+-    layout: "wide",
+-    confidential: true,
+-    accent: "lavender",
+-    terminalBlock: [
+-      "$ debug workflow --module procurement",
+-      "status: resolved",
+-      "stack: Spring Boot · Oracle SQL · ServiceNow · Next.js",
+-    ],
++    accent: "blue",
+   },
+ ];
+ 
+@@ -169,31 +135,31 @@ export const stackGroups: StackGroup[] = [
+     index: "01",
+     title: "BACKEND",
+     accent: "orange",
+-    items: ["Java", "Spring Boot", "Spring Security", "REST APIs", "JPA"],
++    items: ["Java", "Spring Boot", "Spring Security", "REST APIs", "JPA / Hibernate"],
+   },
+   {
+     index: "02",
+     title: "DATA",
+     accent: "blue",
+-    items: ["Oracle SQL", "MySQL", "Hibernate", "SQL Optimisation"],
++    items: ["Oracle SQL", "MySQL", "Transaction Handling", "SQL Optimisation"],
+   },
+   {
+     index: "03",
+     title: "FRONTEND",
+     accent: "neutral",
+-    items: ["Next.js", "React.js", "TypeScript", "API Integration"],
++    items: ["Next.js", "React", "TypeScript", "API Integration"],
+   },
+   {
+     index: "04",
+-    title: "ENGINEERING PRACTICE",
++    title: "ENGINEERING",
+     accent: "green",
+-    items: ["ServiceNow Integration", "Concurrency Control", "Maven", "Debugging"],
++    items: ["Git", "Maven", "Docker", "Debugging", "Concurrency Control"],
+   },
+   {
+     index: "05",
+     title: "TOOLS",
+     accent: "neutral",
+-    items: ["Git", "SVN", "Postman", "IntelliJ IDEA", "VS Code"],
++    items: ["IntelliJ IDEA", "VS Code", "Postman / Bruno", "SVN"],
+   },
+ ];
+ 
+@@ -330,7 +296,7 @@ export const focusItems: FocusItem[] = [
+ ];
+ 
+ export const contactConfig: ContactConfig = {
+-  heading: "Let's build something reliable.",
+-  body: "I am open to software-development opportunities involving Java, Spring Boot, Oracle SQL, Next.js, and backend-heavy full-stack work.",
++  heading: "Looking for backend-heavy software engineering opportunities.",
++  body: "I am open to roles involving Java, Spring Boot, REST APIs, workflow systems, SQL, and production-facing backend work.",
+   email: "punithansiva987@gmail.com",
+ };

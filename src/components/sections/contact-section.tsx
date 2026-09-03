@@ -1,59 +1,77 @@
-import { contactConfig, siteConfig, socialLinks } from "@/data/portfolio";
 import { SectionReveal } from "@/components/motion/section-reveal";
 import { Container } from "@/components/ui/container";
 import { SectionLabel } from "@/components/ui/section-label";
+import { contactConfig, siteConfig, socialLinks } from "@/data/portfolio";
 import { isPlaceholder } from "@/lib/utils";
 
 export function ContactSection() {
   const emailHref = isPlaceholder(contactConfig.email) ? null : `mailto:${contactConfig.email}`;
-  const linkedIn = socialLinks.find((link) => link.label === "LinkedIn");
-  const gitHub = socialLinks.find((link) => link.label === "GitHub");
+  const visibleSocials = socialLinks.filter(
+    (link) => link.label !== "Email" && !isPlaceholder(link.href),
+  );
 
   return (
-    <section id="contact" className="scroll-mt-24">
-      <Container className="py-24 md:py-32">
-        <SectionReveal className="rounded-[1.5rem] border border-edge bg-surface/30 p-8 md:p-10">
-          <SectionLabel index="06" label="CONTACT" />
-          <h2 className="mt-6 max-w-3xl font-display text-4xl leading-[1.05] font-semibold tracking-tight text-primary sm:text-5xl">
+    <section id="contact" className="scroll-mt-24 border-t border-edge bg-surface">
+      <Container className="py-24 md:py-36">
+        <SectionReveal>
+          <SectionLabel index="09" label="CONTACT" />
+          <h2 className="mt-10 max-w-5xl font-display text-5xl font-semibold leading-[0.98] tracking-[-0.045em] text-primary sm:text-6xl md:text-7xl">
             {contactConfig.heading}
           </h2>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-secondary">{contactConfig.body}</p>
+          <p className="mt-7 max-w-2xl text-lg leading-relaxed text-secondary">
+            {contactConfig.body}
+          </p>
 
-          <div className="mt-8 flex flex-wrap gap-4">
+          <div className="mt-10 flex flex-wrap gap-3">
             {emailHref && (
-              <a href={emailHref} className="rounded-full border border-edge px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-primary transition hover:border-accent-orange hover:text-accent-orange">
-                Email
+              <a
+                href={emailHref}
+                className="flex min-h-11 items-center border border-accent-orange bg-accent-orange px-5 font-mono text-[10px] uppercase tracking-[0.16em] text-background transition-colors hover:bg-transparent hover:text-primary"
+              >
+                Email me
               </a>
             )}
-            {linkedIn && !isPlaceholder(linkedIn.href) && (
-              <a href={linkedIn.href} target="_blank" rel="noopener noreferrer" className="rounded-full border border-edge px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-secondary transition hover:border-primary hover:text-primary">
-                LinkedIn
+            {visibleSocials.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex min-h-11 items-center border border-edge px-5 font-mono text-[10px] uppercase tracking-[0.16em] text-primary transition-colors hover:border-accent-orange"
+              >
+                {link.label}
               </a>
-            )}
-            {gitHub && !isPlaceholder(gitHub.href) && (
-              <a href={gitHub.href} target="_blank" rel="noopener noreferrer" className="rounded-full border border-edge px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-secondary transition hover:border-primary hover:text-primary">
-                GitHub
-              </a>
-            )}
-            <a href={siteConfig.resumePath} target="_blank" rel="noopener noreferrer" className="rounded-full border border-edge px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-secondary transition hover:border-primary hover:text-primary">
+            ))}
+            <a
+              href={siteConfig.resumePath}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex min-h-11 items-center border border-edge px-5 font-mono text-[10px] uppercase tracking-[0.16em] text-primary transition-colors hover:border-accent-orange"
+            >
               Résumé
             </a>
           </div>
 
-          <div className="mt-10 grid gap-6 border-t border-edge pt-8 sm:grid-cols-3">
+          <dl className="mt-14 grid gap-7 border-t border-edge pt-7 sm:grid-cols-3">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted">Email</p>
-              <p className="mt-2 text-sm text-secondary">{contactConfig.email}</p>
+              <dt className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted">
+                {contactConfig.emailLabel}
+              </dt>
+              <dd className="mt-2 break-all text-sm text-secondary">{contactConfig.email}</dd>
             </div>
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted">Location</p>
-              <p className="mt-2 text-sm text-secondary">Kanyakumari, Tamil Nadu, India</p>
+              <dt className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted">
+                {contactConfig.locationLabel}
+              </dt>
+              <dd className="mt-2 text-sm text-secondary">{siteConfig.location}</dd>
             </div>
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted">Availability</p>
-              <p className="mt-2 text-sm text-secondary">Open to relevant opportunities</p>
+              <dt className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted">
+                {contactConfig.availabilityLabel}
+              </dt>
+              <dd className="mt-2 text-sm text-secondary">{siteConfig.availability}</dd>
             </div>
-          </div>
+          </dl>
         </SectionReveal>
       </Container>
     </section>

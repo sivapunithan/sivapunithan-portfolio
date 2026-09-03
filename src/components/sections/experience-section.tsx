@@ -1,66 +1,60 @@
-import { experience } from "@/data/portfolio";
 import { SectionReveal } from "@/components/motion/section-reveal";
 import { Container } from "@/components/ui/container";
 import { SectionLabel } from "@/components/ui/section-label";
+import { experience, sectionCopy } from "@/data/portfolio";
 
 export function ExperienceSection() {
+  const copy = sectionCopy.experience;
+
   return (
     <section id="experience" className="scroll-mt-24">
-      <Container className="py-20 md:py-28">
-        <SectionReveal className="mb-12 space-y-5 md:mb-16">
-          <SectionLabel index="05" label="EXPERIENCE" />
-          <h2 className="font-display text-3xl font-semibold tracking-tight text-primary md:text-4xl">
-            Working at the edge of enterprise workflows and backend reliability.
+      <Container className="py-24 md:py-32">
+        <SectionReveal className="grid gap-8 lg:grid-cols-[0.55fr_1.45fr] lg:gap-20">
+          <SectionLabel index={copy.index} label={copy.label} />
+          <h2 className="max-w-3xl font-display text-4xl font-semibold leading-tight tracking-[-0.03em] text-primary sm:text-5xl">
+            {copy.heading}
           </h2>
         </SectionReveal>
 
-        <div className="space-y-10">
+        <div className="mt-16 border-t border-edge">
           {experience.map((entry) => (
             <SectionReveal key={`${entry.company}-${entry.startDate}`}>
-              <div className="rounded-[1.25rem] border border-edge bg-surface/30 p-8 md:p-10">
-                <div className="flex flex-col gap-6 lg:flex-row lg:justify-between">
-                  <div>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-accent-orange">
-                      {entry.startDate} — {entry.endDate}
-                    </p>
-                    <h3 className="mt-3 font-display text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
-                      {entry.role}
-                    </h3>
-                    <p className="mt-2 text-lg text-secondary">{entry.company}</p>
-                    <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
-                      {entry.location}
-                    </p>
-                  </div>
-                  <div className="max-w-2xl">
-                    <p className="text-base leading-relaxed text-secondary">{entry.summary}</p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {entry.techTags.map((tag) => (
-                        <span key={tag} className="rounded-full border border-edge px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-secondary">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+              <article className="grid gap-10 border-b border-edge-subtle py-12 lg:grid-cols-[0.55fr_1.45fr] lg:gap-20">
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-accent-orange">
+                    {entry.startDate} — {entry.endDate}
+                  </p>
+                  <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
+                    {entry.location}
+                  </p>
                 </div>
+                <div>
+                  <h3 className="font-display text-3xl font-semibold tracking-[-0.03em] text-primary">
+                    {entry.role}
+                  </h3>
+                  <p className="mt-2 text-lg text-secondary">{entry.company}</p>
+                  <p className="mt-6 max-w-2xl leading-relaxed text-secondary">{entry.summary}</p>
+                  <p className="mt-5 font-mono text-[10px] leading-relaxed tracking-[0.08em] text-muted">
+                    {entry.techTags.join(" / ")}
+                  </p>
 
-                <div className="mt-8 grid gap-4 lg:grid-cols-2">
-                  {entry.modules.map((module) => (
-                    <div key={module.title} className="rounded-[0.9rem] border border-edge-subtle bg-background/70 p-5">
-                      <h4 className="font-mono text-[11px] uppercase tracking-[0.2em] text-primary">
-                        {module.title}
-                      </h4>
-                      <p className="mt-3 text-sm leading-relaxed text-secondary">{module.description}</p>
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {module.stack.map((tool) => (
-                          <span key={tool} className="font-mono text-[9px] uppercase tracking-[0.16em] text-muted">
-                            {tool}
-                          </span>
-                        ))}
+                  <div className="mt-10 grid gap-8 sm:grid-cols-2">
+                    {entry.modules.map((module) => (
+                      <div key={module.title} className="border-t border-edge-subtle pt-5">
+                        <h4 className="font-mono text-[10px] uppercase tracking-[0.18em] text-primary">
+                          {module.title}
+                        </h4>
+                        <p className="mt-3 text-sm leading-relaxed text-secondary">
+                          {module.description}
+                        </p>
+                        <p className="mt-4 font-mono text-[9px] uppercase tracking-[0.12em] text-muted">
+                          {module.stack.join(" · ")}
+                        </p>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </article>
             </SectionReveal>
           ))}
         </div>

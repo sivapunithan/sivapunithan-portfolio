@@ -42,7 +42,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="absolute inset-x-0 top-full border-b border-edge bg-background-deep md:hidden"
+          className="absolute inset-x-0 top-full border-b border-edge bg-background-deep lg:hidden"
         >
           <ul className="px-5 py-4">
             {navigation.map((item, index) => (
@@ -51,7 +51,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   ref={index === 0 ? firstLinkRef : undefined}
                   href={item.href}
                   onClick={onClose}
-                  className="flex items-baseline gap-3 py-3.5 text-base text-primary"
+                  className="flex min-h-11 items-center gap-3 py-3.5 text-base text-primary"
                 >
                   <span aria-hidden="true" className="font-mono text-[10px] text-muted">
                     {String(index + 1).padStart(2, "0")}
@@ -66,7 +66,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={onClose}
-                className="flex items-baseline gap-3 py-3.5 font-mono text-xs tracking-[0.16em] text-secondary uppercase"
+                className="flex min-h-11 items-center gap-3 py-3.5 font-mono text-xs tracking-[0.16em] text-secondary uppercase"
               >
                 <span aria-hidden="true" className="font-mono text-[10px] text-muted">
                   ↓

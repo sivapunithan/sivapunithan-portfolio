@@ -12,7 +12,6 @@ const ACCENT_BG: Record<AccentTone, string> = {
   green: "bg-accent-green/45",
   orange: "bg-accent-orange/45",
   yellow: "bg-accent-yellow/45",
-  lavender: "bg-accent-lavender/45",
   neutral: "bg-muted/45",
 };
 
@@ -51,7 +50,7 @@ export function ProjectPlaceholder({ index, title, accent }: ProjectPlaceholderP
   return (
     <div
       aria-hidden="true"
-      className="relative flex aspect-[16/10] flex-col overflow-hidden border border-edge bg-background-deep transition-colors duration-300 group-hover:border-accent-lavender/35 group-hover:bg-surface"
+      className="relative flex aspect-[16/10] flex-col overflow-hidden border border-edge bg-background-deep transition-colors duration-300 group-hover:border-accent-orange/45 group-hover:bg-surface"
     >
       {/* Pseudo-file breadcrumb */}
       <div className="flex h-8 shrink-0 items-center border-b border-edge-subtle px-4">

@@ -20,4 +20,4 @@ While `image.src` is still `[ADD PROJECT SCREENSHOT]`, the site renders a
 designed IDE-inspired placeholder instead — nothing breaks without files here.
 
 Do not add fabricated screenshots, and never add screenshots of confidential
-enterprise work (Project 04 stays placeholder-only by design).
+enterprise work. The enterprise workflow case study stays abstract by design.

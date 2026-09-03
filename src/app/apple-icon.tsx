@@ -12,25 +12,16 @@ export default function AppleIcon() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#050510",
-        borderRadius: 36,
-        border: "2px solid rgba(255, 43, 214, 0.6)",
+        background: "#090909",
+        border: "2px solid rgba(244, 235, 220, 0.24)",
         boxSizing: "border-box",
         position: "relative",
         overflow: "hidden",
-        color: "#fff7fd",
+        color: "#f4ebdc",
         fontFamily: "Arial, sans-serif",
         fontWeight: 800,
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "radial-gradient(circle at 50% 0%, rgba(255, 43, 214, 0.22), transparent 60%)",
-        }}
-      />
       <div
         style={{
           position: "relative",
@@ -46,7 +37,6 @@ export default function AppleIcon() {
           style={{
             fontSize: 72,
             letterSpacing: -6,
-            textShadow: "0 0 18px rgba(255, 43, 214, 0.55)",
           }}
         >
           SP
@@ -57,7 +47,7 @@ export default function AppleIcon() {
             display: "flex",
             alignItems: "center",
             gap: 10,
-            color: "rgba(248, 152, 32, 0.95)",
+            color: "#c45f32",
             fontSize: 20,
             letterSpacing: 4,
           }}
@@ -66,10 +56,8 @@ export default function AppleIcon() {
             style={{
               width: 14,
               height: 3,
-              borderRadius: 999,
-              background: "#f89820",
+              background: "#c45f32",
               display: "flex",
-              boxShadow: "0 0 12px rgba(248, 152, 32, 0.8)",
             }}
           />
           JAVA

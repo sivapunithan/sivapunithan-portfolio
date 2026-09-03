@@ -7,7 +7,7 @@ export const contentType = "image/png";
 
 /**
  * IDEA Noir Open Graph card: dark workspace surface, mono role label with
- * a small neon-pink active-tab indicator, display name, one thin divider.
+ * a small orange active-tab indicator, display name, and one thin divider.
  */
 export default function OpengraphImage() {
   return new ImageResponse(
@@ -19,22 +19,22 @@ export default function OpengraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          background: "#080812",
+          background: "#090909",
           padding: "0 96px",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          <div style={{ width: 30, height: 3, background: "#ff2bd6", display: "flex" }} />
+          <div style={{ width: 30, height: 3, background: "#c45f32", display: "flex" }} />
           <div
             style={{
               display: "flex",
               fontSize: 21,
               letterSpacing: 6,
-              color: "#8f8aa8",
+              color: "#8f8678",
               fontFamily: "monospace",
             }}
           >
-            BACKEND-FOCUSED FULL-STACK DEVELOPER
+            JAVA BACKEND ENGINEER
           </div>
         </div>
 
@@ -45,7 +45,7 @@ export default function OpengraphImage() {
             fontSize: 92,
             fontWeight: 700,
             letterSpacing: -2,
-            color: "#fff7fd",
+            color: "#f4ebdc",
           }}
         >
           {siteConfig.name}.
@@ -66,7 +66,7 @@ export default function OpengraphImage() {
             display: "flex",
             marginTop: 26,
             fontSize: 22,
-            color: "#d8d2e8",
+            color: "#c9bead",
             fontFamily: "monospace",
           }}
         >

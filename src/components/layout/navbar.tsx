@@ -1,112 +1,72 @@
 "use client";
 
 import { useState } from "react";
-import { navigation, siteConfig } from "@/data/portfolio";
 import { useActiveSection } from "@/components/layout/active-section-provider";
 import { MobileMenu } from "@/components/layout/mobile-menu";
+import { navigation, siteConfig } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 
-/** Maps nav label → Java filename shown on the active tab indicator */
-const NAV_FILE: Record<string, string> = {
-  About: "About.java",
-  Work: "Projects.java",
-  Stack: "Stack.java",
-  Code: "Controller.java",
-  Experience: "Experience.java",
-  Education: "Education.java",
-  Contact: "Contact.java",
-};
-
-/**
- * Tab-inspired navigation row beneath the workspace bar. Desktop shows
- * text links with an active-tab underline; mobile collapses into a
- * minimal menu trigger.
- */
 export function Navbar() {
   const activeSection = useActiveSection();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="relative">
-      <nav
-        aria-label="Primary"
-        className="flex h-11 items-center justify-between px-4 sm:px-6 lg:px-8"
+    <div className="relative mx-auto flex h-[4.25rem] w-full max-w-content items-center justify-between px-5 sm:px-8 lg:px-12">
+      <a
+        href="#hero"
+        aria-label={`${siteConfig.name} home`}
+        className="flex min-h-11 items-center gap-3 text-primary"
       >
-        {/* Desktop links — IDE tab strip */}
-        <ul className="hidden h-full items-stretch md:flex">
-          {navigation.map((item) => {
-            const isActive = activeSection === item.href.replace("#", "");
+        <span className="flex h-8 w-8 items-center justify-center border border-edge font-mono text-[10px] font-bold tracking-[0.08em]">
+          {siteConfig.brandMark}
+        </span>
+        <span className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-muted sm:block">
+          {siteConfig.role}
+        </span>
+      </a>
 
+      <nav aria-label="Primary" className="hidden h-full items-center lg:flex">
+        <ul className="flex h-full items-center">
+          {navigation.map((item) => {
+            const isActive = activeSection === item.href.slice(1);
             return (
-              <li
-                key={item.href}
-                className={cn(
-                  "flex items-stretch border-x border-transparent transition-colors duration-200",
-                  isActive && "border-edge/60 bg-surface-raised/95 active-tab-glow",
-                )}
-              >
+              <li key={item.href} className="h-full">
                 <a
                   href={item.href}
-                  aria-current={isActive ? "true" : undefined}
+                  aria-current={isActive ? "location" : undefined}
                   className={cn(
-                    "relative flex items-center px-4 text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-lavender/50",
-                    isActive ? "text-primary" : "text-secondary hover:text-primary",
+                    "relative flex h-full min-w-11 items-center px-3 text-sm text-secondary transition-colors hover:text-primary",
+                    isActive && "text-primary",
                   )}
                 >
+                  {item.label}
                   {isActive && (
-                    <>
-                      <span
-                        aria-hidden="true"
-                        className="absolute inset-x-0 top-0 h-0.5 bg-accent-lavender shadow-[0_0_18px_var(--accent-lavender)]"
-                      />
-                      <span
-                        aria-hidden="true"
-                        className="absolute inset-x-0 bottom-0 h-px bg-accent-lavender/35"
-                      />
-                    </>
+                    <span className="absolute inset-x-3 bottom-0 h-0.5 bg-accent-blue" aria-hidden="true" />
                   )}
-                  {/* Java file indicator on active tab */}
-                  {isActive && (
-                    <span
-                      aria-hidden="true"
-                      className="mr-1 inline-flex h-3 w-3 items-center justify-center rounded-[0.18rem] bg-accent-orange/15 text-[7px] font-bold text-accent-orange"
-                    >
-                      J
-                    </span>
-                  )}
-                  {isActive && NAV_FILE[item.label] ? NAV_FILE[item.label] : item.label}
                 </a>
               </li>
             );
           })}
         </ul>
-
-        {/* Mobile current-location label */}
-        <p className="font-mono text-[11px] tracking-[0.18em] text-muted uppercase md:hidden">
-          {siteConfig.workspaceBreadcrumb[0]}
-        </p>
-
-        <div className="flex items-center gap-6">
-          <a
-            href={siteConfig.resumePath}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="link-underline hidden font-mono text-[11px] tracking-[0.16em] text-secondary uppercase transition-colors duration-200 hover:text-primary md:inline"
-          >
-            Résumé
-          </a>
-
-          <button
-            type="button"
-            aria-expanded={isMenuOpen}
-            aria-controls="mobile-menu"
-            onClick={() => setIsMenuOpen((open) => !open)}
-            className="font-mono text-[11px] tracking-[0.18em] text-primary uppercase md:hidden"
-          >
-            {isMenuOpen ? "Close" : "Menu"}
-          </button>
-        </div>
+        <a
+          href={siteConfig.resumePath}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-3 flex min-h-11 items-center border border-edge px-4 font-mono text-[10px] uppercase tracking-[0.16em] text-primary transition-colors hover:border-accent-orange hover:text-accent-orange"
+        >
+          Résumé
+        </a>
       </nav>
+
+      <button
+        type="button"
+        aria-expanded={isMenuOpen}
+        aria-controls="mobile-menu"
+        onClick={() => setIsMenuOpen((open) => !open)}
+        className="min-h-11 min-w-11 font-mono text-[10px] uppercase tracking-[0.18em] text-primary lg:hidden"
+      >
+        {isMenuOpen ? "Close" : "Menu"}
+      </button>
 
       <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </div>

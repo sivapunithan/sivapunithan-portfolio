@@ -1,28 +1,21 @@
 import { SectionReveal } from "@/components/motion/section-reveal";
 import { Container } from "@/components/ui/container";
 import { SectionLabel } from "@/components/ui/section-label";
+import { sectionCopy } from "@/data/portfolio";
 
 export function IntroductionSection() {
+  const copy = sectionCopy.introduction;
+
   return (
     <section id="about" className="scroll-mt-24">
-      <Container className="py-20 md:py-28">
-        <SectionReveal>
-          <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-14">
-            <div className="space-y-4">
-              <SectionLabel index="01" label="INTRODUCTION" />
-              <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-muted">
-                Backend systems, presented with editorial impact.
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              <h2 className="font-display text-3xl leading-tight font-semibold tracking-tight text-primary sm:text-4xl md:text-5xl">
-                I work where business workflows, backend logic and data integrity meet.
-              </h2>
-              <p className="max-w-2xl text-lg leading-relaxed text-secondary">
-                My work spans Java and Spring Boot development, REST APIs, enterprise workflows, Oracle SQL and MySQL, production debugging, and Next.js plus TypeScript integration.
-              </p>
-            </div>
+      <Container className="py-24 md:py-36">
+        <SectionReveal className="grid gap-10 lg:grid-cols-[0.55fr_1.45fr] lg:gap-20">
+          <SectionLabel index={copy.index} label={copy.label} />
+          <div>
+            <h2 className="max-w-4xl font-display text-4xl font-semibold leading-[1.02] tracking-[-0.035em] text-primary sm:text-5xl md:text-6xl">
+              {copy.heading}
+            </h2>
+            <p className="mt-8 max-w-2xl text-lg leading-relaxed text-secondary">{copy.body}</p>
           </div>
         </SectionReveal>
       </Container>
