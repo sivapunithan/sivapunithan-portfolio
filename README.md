@@ -78,7 +78,9 @@ sharpest result, regenerate or AI-upscale the illustrations at 2048 px or wider
 and replace the files with the same names.
 
 The Contact page reads public activity for `siteConfig.githubUsername` from the
-GitHub API, refreshed hourly; nothing there is hard-coded.
+GitHub API, and solved-problem counts for `siteConfig.leetcodeUsername` from
+LeetCode's public GraphQL endpoint, refreshed hourly; nothing there is
+hard-coded, and each block hides itself if its source doesn't answer.
 
 ### Résumé
 

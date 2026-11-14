@@ -28,6 +28,7 @@ export const siteConfig: SiteConfig = {
   availability: "Open to relevant opportunities",
   resumePath: "/resume.pdf",
   githubUsername: "sivapunithan",
+  leetcodeUsername: "punithansiva987",
 };
 
 export const navigation: NavItem[] = [
@@ -43,6 +44,11 @@ export const socialLinks: SocialLink[] = [
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/sivapunithan-sathasivan-462959257/",
     handle: "Sivapunithan Sathasivan",
+  },
+  {
+    label: "LeetCode",
+    href: "https://leetcode.com/u/punithansiva987/",
+    handle: "@punithansiva987",
   },
   {
     label: "Email",

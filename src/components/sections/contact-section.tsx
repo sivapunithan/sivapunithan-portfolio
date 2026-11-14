@@ -3,6 +3,7 @@ import { SplitText } from "@/components/motion/split-text";
 import { GithubActivity } from "@/components/sections/github-activity";
 import { Container } from "@/components/ui/container";
 import { ContributionGraph } from "@/components/ui/contribution-graph";
+import { LeetCodeStats } from "@/components/ui/leetcode-stats";
 import { CopyButton } from "@/components/ui/copy-button";
 import { ArrowUpRight } from "@/components/ui/icons";
 import { SectionLabel } from "@/components/ui/section-label";
@@ -90,9 +91,14 @@ export function ContactSection() {
             </Reveal>
           </div>
 
-          <Reveal y={40}>
-            <GithubActivity username={siteConfig.githubUsername} />
-          </Reveal>
+          <div className="space-y-6">
+            <Reveal y={40}>
+              <GithubActivity username={siteConfig.githubUsername} />
+            </Reveal>
+            <Reveal y={40} delay={0.1}>
+              <LeetCodeStats username={siteConfig.leetcodeUsername} />
+            </Reveal>
+          </div>
         </div>
       </Container>
     </section>

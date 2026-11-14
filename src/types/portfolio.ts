@@ -16,6 +16,7 @@ export interface SiteConfig {
   availability: string;
   resumePath: string;
   githubUsername: string;
+  leetcodeUsername: string;
 }
 
 export interface NavItem {
