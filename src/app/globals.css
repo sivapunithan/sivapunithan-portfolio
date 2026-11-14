@@ -1,28 +1,93 @@
 @import "tailwindcss";
 
+/*
+ * THE WORKSHOP — two themes on one set of tokens.
+ *   light (default): "Day Archive"    — aged parchment, oxblood ink, sepia prints.
+ *   dark:            "Night Workshop" — espresso, lamp-brass, cream type.
+ * Every colour on the site comes from the variables below; the theme is chosen by
+ * html[data-theme] (set before first paint by the head script in layout.tsx).
+ */
+/* Shared, theme-independent values. */
 :root {
-  --background: #090909;
-  --background-deep: #050505;
-  --surface: #141311;
-  --surface-raised: #1c1a16;
-  --surface-hover: #26221c;
-  --canvas: #eee7da;
-  --canvas-muted: #d9d0c1;
-  --ink: #171512;
-  --border: rgba(244, 235, 220, 0.18);
-  --border-subtle: rgba(244, 235, 220, 0.09);
-  --border-dark: rgba(23, 21, 18, 0.2);
-  --text-primary: #f4ebdc;
-  --text-secondary: #c9bead;
-  --text-muted: #8f8678;
-  --accent-blue: #75a7d9;
-  --accent-green: #79ad7e;
-  --accent-orange: #c45f32;
-  --accent-yellow: #c9a54b;
-  --container: 1320px;
-  --font-display: "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
-  --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --container: 1280px;
+}
+
+/* Light is the default (also when JavaScript is off); dark is opted into by html[data-theme="dark"]. */
+html {
+  color-scheme: light;
+  --background: #e8dcc0;
+  --background-deep: #dccdab;
+  --surface: #efe4cb;
+  --surface-raised: #f6eddb;
+  --line: rgba(60, 42, 24, 0.2);
+  --line-strong: rgba(60, 42, 24, 0.42);
+  --text-primary: #2a1d10;
+  --text-secondary: #4d3c28;
+  --text-muted: #6c5a43;
+  --accent: #8a3a1c;
+  --accent-bright: #a64a26;
+  --on-accent: #f6eddb;
+  --ember: #a8501f;
+  --paper: #dfcfac;
+  --grain-opacity: 0.2;
+  --grain-blend: multiply;
+  --vignette: rgba(92, 60, 24, 0.32);
+  --art-filter: sepia(0.38) saturate(0.88) contrast(1.03) brightness(1.02);
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #0f0b08;
+  --background-deep: #090705;
+  --surface: #17110c;
+  --surface-raised: #211810;
+  --line: rgba(226, 190, 130, 0.14);
+  --line-strong: rgba(226, 190, 130, 0.3);
+  --text-primary: #f3e9d7;
+  --text-secondary: #b9aa90;
+  --text-muted: #8c7d67;
+  --accent: #d6a85c;
+  --accent-bright: #f2d08f;
+  --on-accent: #23180e;
+  --ember: #d0703c;
+  --paper: #eadcbf;
+  --grain-opacity: 0.055;
+  --grain-blend: normal;
+  --vignette: rgba(0, 0, 0, 0.55);
+  --art-filter: none;
+}
+
+/* A parchment "sheet" inside the page: same components, re-themed tokens. */
+.paper {
+  --surface: #f3e8d0;
+  --surface-raised: #f8f0de;
+  --line: rgba(35, 24, 14, 0.16);
+  --line-strong: rgba(35, 24, 14, 0.36);
+  --text-primary: #23180e;
+  --text-secondary: #54432f;
+  --text-muted: #6c5a43;
+  --accent: #8f4120;
+  --accent-bright: #b8562c;
+  background: var(--paper);
+  color: var(--text-primary);
+}
+
+html:not([data-theme="dark"]) .paper {
+  --paper: #f1e6cc;
+  box-shadow:
+    0 0 0 1px rgba(60, 42, 24, 0.22),
+    0 0 0 6px var(--background),
+    0 0 0 7px rgba(60, 42, 24, 0.22),
+    0 30px 60px -30px rgba(60, 42, 24, 0.5);
+}
+
+@theme {
+  --font-display: "Fraunces Variable", "Iowan Old Style", Georgia, serif;
+  --font-sans:
+    "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 @theme inline {
@@ -30,33 +95,63 @@
   --color-background-deep: var(--background-deep);
   --color-surface: var(--surface);
   --color-surface-raised: var(--surface-raised);
-  --color-surface-hover: var(--surface-hover);
-  --color-canvas: var(--canvas);
-  --color-canvas-muted: var(--canvas-muted);
-  --color-ink: var(--ink);
-  --color-edge: var(--border);
-  --color-edge-subtle: var(--border-subtle);
-  --color-edge-dark: var(--border-dark);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
   --color-primary: var(--text-primary);
   --color-secondary: var(--text-secondary);
   --color-muted: var(--text-muted);
-  --color-accent-blue: var(--accent-blue);
-  --color-accent-green: var(--accent-green);
-  --color-accent-orange: var(--accent-orange);
-  --color-accent-yellow: var(--accent-yellow);
+  --color-accent: var(--accent);
+  --color-accent-bright: var(--accent-bright);
+  --color-ember: var(--ember);
+  --color-paper: var(--paper);
+  --color-on-accent: var(--on-accent);
   --container-content: var(--container);
 }
 
-@utility font-display {
+/* Display type scale — Fraunces, light weight, tight leading. */
+@utility display-xl {
   font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5.1vw, 5rem);
+  font-weight: 360;
+  line-height: 1.02;
+  letter-spacing: -0.028em;
 }
 
-@utility font-body {
-  font-family: var(--font-body);
+@utility display-lg {
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 4.1vw, 3.75rem);
+  font-weight: 360;
+  line-height: 1.06;
+  letter-spacing: -0.024em;
 }
 
-@utility font-mono {
+@utility display-md {
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 2.7vw, 2.5rem);
+  font-weight: 380;
+  line-height: 1.12;
+  letter-spacing: -0.018em;
+}
+
+/*
+ * Poster-size type. Fraunces thins its hairlines as optical size rises, which makes
+ * an "e" read as a "c" at 200px — so giant text pins a sturdier, mid-range cut.
+ */
+@utility display-giant {
+  font-family: var(--font-display);
+  font-size: clamp(4.25rem, 15.5vw, 13.5rem);
+  font-weight: 330;
+  font-variation-settings: "opsz" 40;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+}
+
+@utility label {
   font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 
 * {
@@ -64,39 +159,81 @@
 }
 
 html {
-  scroll-padding-top: 5.5rem;
+  scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: var(--surface-hover) transparent;
+  scrollbar-color: var(--surface-raised) var(--background-deep);
+  background: var(--background);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
+html.scroll-locked {
+  overflow: clip;
 }
 
 body {
   margin: 0;
   overflow-x: clip;
-  background: var(--background);
+  background:
+    radial-gradient(
+      1100px 620px at 82% -8%,
+      color-mix(in srgb, var(--accent) 9%, transparent),
+      transparent 62%
+    ),
+    var(--background);
   color: var(--text-primary);
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-body.intro-visible {
-  overflow: hidden;
+html:not([data-theme="dark"]) body {
+  background: var(--background);
+}
+
+/* Paper/film grain: a fixed, non-interactive texture. Faint on dark, a visible paper tooth on light. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 0.93  0 0 0 0 0.8  0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+html:not([data-theme="dark"]) body::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.22  0 0 0 0 0.1  0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Aged edges: a soft vignette, plus faint foxing blotches on the light paper. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 29;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 42%, transparent 55%, var(--vignette) 130%);
+}
+
+html:not([data-theme="dark"]) body::before {
+  background:
+    radial-gradient(ellipse at 50% 42%, transparent 52%, var(--vignette) 135%),
+    radial-gradient(240px 190px at 9% 14%, rgba(150, 96, 40, 0.1), transparent 70%),
+    radial-gradient(300px 220px at 91% 70%, rgba(150, 96, 40, 0.09), transparent 70%),
+    radial-gradient(200px 160px at 26% 92%, rgba(150, 96, 40, 0.08), transparent 70%);
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--accent-orange) 44%, transparent);
+  background: color-mix(in srgb, var(--accent) 38%, transparent);
   color: var(--text-primary);
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent-orange);
+  outline: 2px solid var(--accent);
   outline-offset: 4px;
+  border-radius: 4px;
 }
 
 a,
@@ -106,65 +243,425 @@ button {
 
 button {
   font: inherit;
-}
-
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  border-bottom: 1px solid var(--border-subtle);
-  background: color-mix(in srgb, var(--background) 94%, transparent);
+  color: inherit;
+  cursor: pointer;
 }
 
 .skip-link {
   position: fixed;
   left: 1rem;
-  top: -5rem;
-  z-index: 100;
-  border: 1px solid var(--accent-orange);
+  top: -6rem;
+  z-index: 120;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
   background: var(--surface-raised);
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 1.25rem;
   color: var(--text-primary);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  text-transform: uppercase;
+  font-size: 0.875rem;
 }
 
 .skip-link:focus-visible {
   top: 1rem;
 }
 
+/* ───────────────────────── Typography helpers ───────────────────────── */
+
+.accent-phrase {
+  color: var(--accent);
+  font-style: italic;
+  font-weight: 340;
+}
+
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 62%, transparent);
+}
+
+/* Word mask for SplitText: padding keeps descenders and italic overhang inside the clip. */
+.split-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0.1em 0.07em 0.18em;
+  margin: -0.1em -0.07em -0.18em;
+}
+
+/* Animated underline for inline links. */
 .link-underline {
   background-image: linear-gradient(currentColor, currentColor);
-  background-position: 0 100%;
+  background-position: 100% 100%;
   background-repeat: no-repeat;
   background-size: 0 1px;
-  transition: background-size 220ms ease;
+  transition: background-size 520ms var(--ease-expo);
 }
 
 .link-underline:hover,
-.link-underline:focus-visible {
+.link-underline:focus-visible,
+.group:hover .link-underline {
+  background-position: 0 100%;
   background-size: 100% 1px;
 }
 
-.intro-code-line {
-  opacity: 0;
-  transform: translateY(4px);
-  animation: intro-line 240ms ease forwards;
+/* Rolling label: the text slides up and a copy rolls in from below on hover. */
+.roll {
+  position: relative;
+  display: block;
+  overflow: hidden;
 }
 
-@keyframes intro-line {
+.roll-a,
+.roll-b {
+  display: block;
+  transition: transform 560ms var(--ease-expo);
+}
+
+.roll-b {
+  position: absolute;
+  inset: 0;
+  transform: translateY(105%);
+}
+
+.roll-group:hover .roll-a,
+.roll-group:focus-visible .roll-a {
+  transform: translateY(-105%);
+}
+
+.roll-group:hover .roll-b,
+.roll-group:focus-visible .roll-b {
+  transform: translateY(0);
+}
+
+/* ───────────────────────── Page chrome ───────────────────────── */
+
+/* First-visit preloader is server-rendered; the head script hides it for repeat visits. */
+html[data-intro="seen"] .preloader {
+  display: none;
+}
+
+/* Route-change curtain: pure CSS so it replays on every template mount. */
+.page-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  background: var(--background-deep);
+  border-bottom: 1px solid var(--accent);
+  transform-origin: top;
+  animation: curtain-lift 950ms var(--ease-inout) 60ms both;
+}
+
+@keyframes curtain-lift {
+  from {
+    transform: scaleY(1);
+  }
   to {
-    opacity: 1;
-    transform: translateY(0);
+    transform: scaleY(0);
   }
 }
 
+/* Hero image blends into the page instead of sitting in a box. */
+.hero-fade-x {
+  background: linear-gradient(
+    90deg,
+    var(--background) 0%,
+    color-mix(in srgb, var(--background) 72%, transparent) 20%,
+    color-mix(in srgb, var(--background) 18%, transparent) 46%,
+    transparent 62%
+  );
+}
+
+.hero-fade-y {
+  background: linear-gradient(
+    0deg,
+    var(--background) 0%,
+    color-mix(in srgb, var(--background) 78%, transparent) 26%,
+    transparent 70%
+  );
+}
+
+.scroll-cue {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.scroll-cue::before {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 2.75rem;
+  background: linear-gradient(var(--accent), transparent);
+  transform-origin: top;
+  animation: scroll-cue 2.4s var(--ease-inout) infinite;
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+.pulse-dot {
+  position: relative;
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent);
+  animation: pulse-ring 2.4s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+  from {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(3.2);
+  }
+}
+
+/* ───────────────────────── Components ───────────────────────── */
+
+/* Pointer-tracked glow; --mx/--my are set by SpotlightCard. */
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    460px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--accent) 16%, transparent),
+    transparent 62%
+  );
+  transition: opacity 500ms ease;
+}
+
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+.work-row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent) 11%, transparent),
+    transparent 72%
+  );
+  opacity: 0;
+  transform: scaleX(0.6);
+  transform-origin: left;
+  transition:
+    opacity 500ms ease,
+    transform 700ms var(--ease-expo);
+}
+
+.work-row:hover::before,
+.work-row:focus-visible::before {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Marquee: the track holds two identical halves and slides by exactly one of them. */
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 48s) linear infinite;
+}
+
+.marquee-track[data-reverse="true"] {
+  animation-direction: reverse;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Request-path diagram: plates joined by hairlines, with a glint travelling node to node. */
+.flow {
+  display: flex;
+  flex-direction: column;
+}
+
+.flow-link {
+  position: relative;
+  flex: none;
+  width: 1px;
+  height: 1.5rem;
+  margin-left: 1.75rem;
+  overflow: hidden;
+  background: var(--line-strong);
+}
+
+.flow-pulse {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent, var(--accent-bright), transparent);
+  transform: translateY(-100%);
+  animation: flow-pulse-y 4.5s linear infinite;
+}
+
+@keyframes flow-pulse-y {
+  0% {
+    transform: translateY(-100%);
+  }
+  20%,
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes flow-pulse-x {
+  0% {
+    transform: translateX(-100%);
+  }
+  20%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (min-width: 1024px) {
+  .flow[data-direction="horizontal"] {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .flow[data-direction="horizontal"] .flow-node {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .flow[data-direction="horizontal"] .flow-plate {
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.1rem 1rem 1.2rem;
+  }
+
+  .flow[data-direction="horizontal"] .flow-link {
+    flex: 0 0 1.25rem;
+    width: auto;
+    height: 1px;
+    margin-left: 0;
+    align-self: center;
+  }
+
+  .flow[data-direction="horizontal"] .flow-pulse {
+    background: linear-gradient(90deg, transparent, var(--accent-bright), transparent);
+    transform: translateX(-100%);
+    animation-name: flow-pulse-x;
+  }
+}
+
+/* ───────────────────────── Vintage details ───────────────────────── */
+
+/* Illustrations read as old prints on light paper. */
+.art-print {
+  filter: var(--art-filter);
+}
+
+/* Smooth cross-fade while the theme flips (class added briefly by ThemeToggle). */
+html.theme-fade,
+html.theme-fade *,
+html.theme-fade *::before,
+html.theme-fade *::after {
+  transition:
+    background-color 600ms ease,
+    color 600ms ease,
+    border-color 600ms ease,
+    fill 600ms ease,
+    stroke 600ms ease !important;
+}
+
+/* Major sections are divided by a printer's double rule rather than a hairline. */
+section.border-t.border-line,
+footer.border-t.border-line {
+  border-top-style: double;
+  border-top-width: 4px;
+}
+
+/* Drop cap for the opening paragraph of a text block. */
+.dropcap::first-letter {
+  float: left;
+  margin: 0.08em 0.12em -0.05em -0.02em;
+  font-family: var(--font-display);
+  font-size: 4.1em;
+  font-weight: 400;
+  line-height: 0.78;
+  color: var(--accent);
+}
+
+/* Corner brackets, like the registration marks on an engraved plate. */
+.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  pointer-events: none;
+  opacity: 0.55;
+  background:
+    linear-gradient(var(--accent), var(--accent)) left top / 14px 1px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) left top / 1px 14px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) right top / 14px 1px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) right top / 1px 14px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) left bottom / 14px 1px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) left bottom / 1px 14px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) right bottom / 14px 1px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) right bottom / 1px 14px no-repeat;
+}
+
+/* Plate caption set vertically along the edge of a hero illustration. */
+.plate-caption {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  letter-spacing: 0.28em;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .page-curtain {
+    display: none;
+  }
+
   *,
   *::before,
   *::after {
-    scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

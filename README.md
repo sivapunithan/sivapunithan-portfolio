@@ -1,134 +1,112 @@
 # Sivapunithan S — Portfolio
 
-**IDEA NOIR — Engineered with Intent.** A single-page portfolio for a
-backend-focused full-stack developer, designed as a premium engineering
-site introduced by a short Java-editor narrative. After the intro, the site
-becomes an editorial engineering portfolio with dark surfaces, generous
-spacing, thin dividers, and occasional IDE details where they add meaning.
+**The Night Workshop.** A multi-page, motion-led portfolio for a Java backend
+engineer: deep espresso surfaces, brass accents, Fraunces serif headlines, and
+four painted steampunk illustrations that open each page. Design and
+engineering rules live in [`AGENTS.md`](AGENTS.md).
 
 ## Tech stack
 
-- [Next.js](https://nextjs.org) App Router (v16) — Server Components by default
+- [Next.js](https://nextjs.org) App Router (v16), Server Components by default
 - TypeScript (strict)
 - Tailwind CSS v4 (CSS-first config in `src/app/globals.css`)
-- [Motion for React](https://motion.dev) (`motion/react`) — conservative, one-time reveals
-- local/system font stacks (no build-time font download) and `next/image`
+- [Motion](https://motion.dev) (`motion/react`) for reveals, parallax and hover physics
+- [Lenis](https://lenis.darkroom.engineering) for inertia scrolling
+- Self-hosted variable fonts via `@fontsource-variable`: Fraunces, Geist, JetBrains Mono
 - ESLint 9 + Prettier
 
 ## Local setup
 
 ```bash
 npm install
-npm run dev        # development server → http://localhost:3000
+npm run dev        # http://localhost:3000
 ```
-
-Other commands:
 
 ```bash
-npm run lint           # ESLint
-npm run typecheck      # TypeScript validation (tsc --noEmit)
-npm run build          # production build
-npm run start          # serve the production build
-npm run format         # Prettier write
+npm run lint       # ESLint
+npm run typecheck  # tsc --noEmit
+npm run build      # production build
+npm run start      # serve the production build
+npm run format     # Prettier
 ```
 
-## Deployment
+## Pages
 
-Any Node host or Vercel works:
+| Route | Opens with | Contents |
+| --- | --- | --- |
+| `/` | `forge-hero.png` | Hero, scroll-lit statement, project index, stack marquee, About teaser |
+| `/about` | `forge-about.png` | Introduction and facts, request-path model, experience, education, current focus |
+| `/work` | `forge-stack.png` | Each project with its request path, then the toolbox |
+| `/contact` | `forge-contact.png` | Email, other channels, live GitHub activity |
+| `/projects/[slug]` | — | Case study per project, statically generated from the data file |
 
-1. Set the production domain in `src/data/portfolio.ts` (`siteConfig.domain`)
-   so metadata, sitemap, and robots resolve to the real URL.
-2. `npm run build` then `npm run start`, or connect the repo to Vercel —
-   zero extra configuration is required.
+Every page except Contact ends in a large "Let's talk" invitation in the footer.
 
-## Content customisation
+## Motion
 
-All content lives in **`src/data/portfolio.ts`** (typed by
-`src/types/portfolio.ts`): site config, navigation, social links, projects,
-intro and hero copy, stack groups, experience, focus items, and contact copy. Components never
-hard-code content — edit the data file only.
+- **Preloader** — first visit per session; skipped for repeat visits and reduced motion.
+- **Page curtain** — a CSS lift on every route change (`src/app/template.tsx`).
+- **Headlines** rise word by word; other content fades up as it enters view.
+- **Illustrations** settle from a slight zoom, drift on scroll and lean toward the pointer.
+- **Gears** in the margins turn with the scroll position.
+- **Buttons** are magnetic with rolling labels; cards carry a pointer-tracked glow.
 
-### Placeholder checklist
+Everything respects `prefers-reduced-motion`.
 
-Search `src/data/portfolio.ts` for `[ADD` and replace:
+## Themes
 
-- [ ] `[ADD PORTRAIT IMAGE]` — optional portrait (abstract visual shown until set)
-- [ ] `[ADD PROJECT REPOSITORY URL]` — per-project repo links (hidden until set)
-- [ ] `[ADD PROJECT SCREENSHOT]` — per-project images (designed placeholder until set)
+Light ("Day Archive", parchment with sepia-toned illustrations) is the default;
+dark ("Night Workshop") is one click away. The sun/moon switch in the header
+flips between them and remembers the choice. Both are defined as colour
+tokens in `src/app/globals.css`, so components never hard-code a theme.
 
-Email is already set. Placeholder links are never rendered as broken
-actions; placeholder screenshots render a designed IDE-inspired visual.
+## Editing content
 
-### Screenshots
+All content lives in **`src/data/portfolio.ts`**, typed by
+`src/types/portfolio.ts`: site config, navigation, page hero copy, projects
+(including each project's request `flow`), experience, education, focus items
+and contact copy. Wrap one phrase of a heading in asterisks to set it in the
+italic brass accent: `"I build things *that last.*"`.
 
-See [`public/projects/README.md`](public/projects/README.md). Drop a
-1280×800 image into `public/projects/` and point the project's `image.src`
-at it.
+Illustrations live in `public/images/`. Each one's crop is controlled by its
+`illustration.position` (a CSS `object-position`) in the data file.
+
+The originals were generated at 1024 px wide, which looks soft when drawn
+large. The files in `public/images/` are 2× Lanczos upscales with light
+sharpening, served by Next.js as AVIF at quality 90 (`next.config.ts`). For the
+sharpest result, regenerate or AI-upscale the illustrations at 2048 px or wider
+and replace the files with the same names.
+
+The Contact page reads public activity for `siteConfig.githubUsername` from the
+GitHub API, and solved-problem counts for `siteConfig.leetcodeUsername` from
+LeetCode's public GraphQL endpoint, refreshed hourly; nothing there is
+hard-coded, and each block hides itself if its source doesn't answer.
 
 ### Résumé
 
-`public/resume.pdf` is a generated placeholder — replace it with the real
-résumé (same filename) or change `siteConfig.resumePath`.
+`public/resume.pdf` is served at `/resume.pdf`. Replace the file to update it.
 
-### Social links & metadata domain
+## Deployment
 
-Edit `socialLinks` and `siteConfig.domain` in `src/data/portfolio.ts`.
-The OG image, sitemap, and robots files pick the domain up automatically.
-
-### Fonts
-
-The three roles use resilient local/system stacks, so production builds never
-download a font. To add a premium local display font, follow
-[`src/assets/fonts/README.md`](src/assets/fonts/README.md). **Only self-host
-fonts you are licensed to embed.**
-
-## Narrative intro
-
-`CodeEditorIntro` is a small client boundary layered over the already-rendered
-hero. It runs once per browser session, closes automatically after about 4.6
-seconds, supports an immediate button or Escape skip, and is bypassed for
-reduced-motion users. All remaining page sections are Server Components except
-the existing navigation and one-time motion boundaries.
-
-## Project routes
-
-`src/app/projects/[slug]/page.tsx` statically generates a case-study route for
-every project in `src/data/portfolio.ts`. Invalid slugs return not found; no
-project route is hard-coded separately.
-
-## Reduced motion
-
-`MotionConfig reducedMotion="user"` disables transform-based animation
-globally for users with `prefers-reduced-motion`; clip-path reveals check
-`useReducedMotion` and render statically; CSS underline/hover transitions
-are wrapped in `prefers-reduced-motion` media queries; smooth scrolling is
-only enabled for `no-preference` users.
+1. Set `siteConfig.domain` in `src/data/portfolio.ts` so metadata, the sitemap
+   and robots resolve to the real URL.
+2. `npm run build` then `npm run start`, or deploy the repo to Vercel.
 
 ## Folder structure
 
 ```
 src/
-  app/                 layout, page, globals.css, metadata routes, and
-                       data-driven projects/[slug] pages
-  assets/fonts/        local display font slot + replacement guide
+  app/                 layout, template (page curtain), routes, metadata images
   components/
-    intro/             session hook, editor profile, narrative intro boundary
-    layout/            navbar, mobile menu, footer, active-section provider
-    sections/          hero, introduction, projects, architecture, experience,
-                       stack, education, current focus, contact
-    project/           project-feature, project-visual, project-placeholder,
-                       project-links
-    ui/                container, section-label, text-link, status-label
-    motion/            motion-provider, mask-reveal, fade-up, image-reveal,
-                       section-reveal
-  data/portfolio.ts    ALL editable content + placeholders
-  types/portfolio.ts   typed content models
-  lib/utils.ts         cn(), isPlaceholder(), getSiteUrl()
-public/
-  resume.pdf           placeholder résumé (replace)
-  projects/            real screenshots (optional)
+    layout/            navbar, mobile menu, preloader, footer
+    motion/            providers and animation primitives
+    sections/          page sections grouped by page
+    project/           case-study page
+    ui/                buttons, cards, chips, gear, marquee, flow diagram, icons
+  data/portfolio.ts    all editable content
+  hooks/               scroll lock
+  lib/                 utilities and the literal palette for generated images
+  types/portfolio.ts   content models
+public/images/         page illustrations
 scripts/               placeholder-résumé generator (one-off utility)
 ```
-
-Durable design and architecture rules for future changes live in
-[`AGENTS.md`](AGENTS.md).

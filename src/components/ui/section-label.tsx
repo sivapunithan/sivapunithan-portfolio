@@ -6,13 +6,13 @@ interface SectionLabelProps {
   className?: string;
 }
 
-/** Mono section index, e.g. "02 / SELECTED WORK". */
+/** Section marker: brass index, a short rule, then the section name. */
 export function SectionLabel({ index, label, className }: SectionLabelProps) {
   return (
-    <p className={cn("font-mono text-xs tracking-[0.18em] text-muted", className)}>
-      <span className="text-accent-orange">{index}</span>
-      <span aria-hidden="true"> / </span>
-      {label}
+    <p className={cn("label flex items-center gap-4 text-muted", className)}>
+      <span className="text-accent">{index}</span>
+      <span aria-hidden="true" className="h-px w-10 bg-line-strong" />
+      <span>{label}</span>
     </p>
   );
 }
