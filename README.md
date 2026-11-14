@@ -72,11 +72,10 @@ Illustrations live in `public/images/`. Each one's crop is controlled by its
 `illustration.position` (a CSS `object-position`) in the data file.
 
 The originals were generated at 1024 px wide, which looks soft when drawn
-full-width. The files in `public/images/` are 2× Lanczos upscales with light
-sharpening; the untouched originals are kept in `assets/illustrations-original/`.
-Next.js serves them as AVIF at quality 90 (`next.config.ts`). For the sharpest
-result, regenerate or AI-upscale the illustrations at 2048 px or wider and
-replace the files in `public/images/` with the same names.
+large. The files in `public/images/` are 2× Lanczos upscales with light
+sharpening, served by Next.js as AVIF at quality 90 (`next.config.ts`). For the
+sharpest result, regenerate or AI-upscale the illustrations at 2048 px or wider
+and replace the files with the same names.
 
 The Contact page reads public activity for `siteConfig.githubUsername` from the
 GitHub API, refreshed hourly; nothing there is hard-coded.
