@@ -1,20 +1,21 @@
 import type { MetadataRoute } from "next";
-import { projects, siteConfig } from "@/data/portfolio";
+import { navigation, projects, siteConfig } from "@/data/portfolio";
 import { getSiteUrl } from "@/lib/utils";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = getSiteUrl(siteConfig.domain);
+  const lastModified = new Date();
 
   return [
-    {
-      url: siteUrl,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 1,
-    },
+    ...navigation.map((item) => ({
+      url: item.href === "/" ? siteUrl : `${siteUrl}${item.href}`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: item.href === "/" ? 1 : 0.8,
+    })),
     ...projects.map((project) => ({
       url: `${siteUrl}/projects/${project.slug}`,
-      lastModified: new Date(),
+      lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),

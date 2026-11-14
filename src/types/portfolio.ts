@@ -1,9 +1,13 @@
-/** Typed content models for the portfolio. Editable copy lives in src/data/portfolio.ts. */
-
-export type AccentTone = "blue" | "green" | "orange" | "yellow" | "neutral";
+/**
+ * Typed content models for the portfolio. Editable copy lives in src/data/portfolio.ts.
+ *
+ * Headings may wrap one phrase in asterisks — "plain *accent phrase* plain" — which the
+ * text components render in the italic brass accent style.
+ */
 
 export interface SiteConfig {
   name: string;
+  shortName: string;
   brandMark: string;
   role: string;
   description: string;
@@ -11,6 +15,7 @@ export interface SiteConfig {
   location: string;
   availability: string;
   resumePath: string;
+  githubUsername: string;
 }
 
 export interface NavItem {
@@ -21,6 +26,39 @@ export interface NavItem {
 export interface SocialLink {
   label: string;
   href: string;
+  handle: string;
+}
+
+export interface Illustration {
+  src: string;
+  alt: string;
+  /** CSS object-position, used to keep the subject in frame when the image is cropped. */
+  position: string;
+  /** Engraved-plate style caption shown along the image edge, e.g. "Plate I — The workshop". */
+  caption?: string;
+}
+
+export interface IntroContent {
+  name: string;
+  role: string;
+  note: string;
+}
+
+export interface HeroContent {
+  eyebrow: string;
+  heading: string;
+  body: string;
+  primaryAction: string;
+  resumeAction: string;
+  illustration: Illustration;
+}
+
+/** Hero copy for a top-level page (About / Work / Contact). */
+export interface PageHeroCopy {
+  eyebrow: string;
+  heading: string;
+  body: string;
+  illustration: Illustration;
 }
 
 export interface SectionCopy {
@@ -30,36 +68,16 @@ export interface SectionCopy {
   body?: string;
 }
 
-export interface IntroContent {
-  tab: string;
-  openingMessage: string;
-  skipLabel: string;
-  profileLines: readonly string[];
-  revealName: string;
-  revealRole: string;
-  revealStatement: string;
+export interface Fact {
+  label: string;
+  value: string;
 }
 
-export interface PortraitConfig {
-  src: string;
-  alt: string;
-}
-
-export interface HeroContent {
-  fileLabel: string;
-  eyebrow: string;
-  heading: string;
-  body: string;
-  primaryAction: string;
-  resumeAction: string;
-  architectureCaption: string;
-  architecturePath: readonly string[];
-  portrait: PortraitConfig;
-}
+export type ProjectTone = "active" | "building" | "private";
 
 export interface ProjectStatus {
   label: string;
-  tone: AccentTone;
+  tone: ProjectTone;
 }
 
 export interface ProjectLink {
@@ -67,17 +85,15 @@ export interface ProjectLink {
   href: string;
 }
 
-export type ProjectLayout = "imageLeft" | "imageRight" | "wide";
-
-export interface ProjectImage {
-  src: string;
-  alt: string;
+export interface FlowNode {
+  label: string;
+  detail: string;
 }
 
 export interface Project {
-  index: string;
   slug: string;
   title: string;
+  tagline: string;
   category: string;
   summary: string;
   problem: string;
@@ -86,25 +102,23 @@ export interface Project {
   stack: string[];
   status: ProjectStatus;
   links: ProjectLink[];
-  image: ProjectImage;
-  layout: ProjectLayout;
+  /** The request path through the system, drawn as the project's schematic. */
+  flow: FlowNode[];
   confidential: boolean;
-  accent: AccentTone;
 }
 
 export interface ArchitectureContent {
   section: SectionCopy;
-  flow: readonly { label: string; detail: string }[];
+  flow: FlowNode[];
   concernLabel: string;
   concern: string;
   principlesLabel: string;
-  principles: readonly string[];
+  principles: string[];
 }
 
 export interface StackGroup {
   index: string;
   title: string;
-  accent: AccentTone;
   items: string[];
 }
 
@@ -120,7 +134,6 @@ export interface ExperienceEntry {
   location: string;
   startDate: string;
   endDate: string;
-  title: string;
   summary: string;
   techTags: string[];
   modules: ExperienceModule[];
@@ -132,6 +145,7 @@ export interface EducationEntry {
   board: string;
   period: string;
   score: string;
+  scoreLabel: string;
 }
 
 export type FocusStatus = "LEARNING" | "PRACTISING" | "BUILDING";
@@ -146,7 +160,6 @@ export interface ContactConfig {
   heading: string;
   body: string;
   email: string;
-  emailLabel: string;
-  locationLabel: string;
-  availabilityLabel: string;
+  footerPrompt: string;
+  footerAction: string;
 }

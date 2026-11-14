@@ -1,4 +1,6 @@
 import { ImageResponse } from "next/og";
+import { siteConfig } from "@/data/portfolio";
+import { brand } from "@/lib/brand";
 
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
@@ -12,48 +14,17 @@ export default function Icon() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#090909",
-        border: "1px solid rgba(244, 235, 220, 0.24)",
-        boxSizing: "border-box",
-        position: "relative",
-        overflow: "hidden",
-        color: "#f4ebdc",
-        fontFamily: "Arial, sans-serif",
-        fontWeight: 700,
+        borderRadius: 16,
+        background: brand.background,
+        border: `1.5px solid ${brand.accent}`,
+        color: brand.accent,
+        fontFamily: "Georgia, serif",
+        fontStyle: "italic",
+        fontSize: 15,
+        letterSpacing: -0.5,
       }}
     >
-      <div
-        style={{
-          position: "relative",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: 16,
-          letterSpacing: -1,
-        }}
-      >
-        SP
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          right: 5,
-          top: 5,
-          width: 4,
-          height: 4,
-          background: "#c45f32",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          left: 6,
-          right: 6,
-          bottom: 4,
-          height: 1,
-          background: "#c45f32",
-        }}
-      />
+      {siteConfig.brandMark}
     </div>,
     size,
   );

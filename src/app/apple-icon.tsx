@@ -1,4 +1,6 @@
 import { ImageResponse } from "next/og";
+import { siteConfig } from "@/data/portfolio";
+import { brand } from "@/lib/brand";
 
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
@@ -12,56 +14,26 @@ export default function AppleIcon() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#090909",
-        border: "2px solid rgba(244, 235, 220, 0.24)",
-        boxSizing: "border-box",
-        position: "relative",
-        overflow: "hidden",
-        color: "#f4ebdc",
-        fontFamily: "Arial, sans-serif",
-        fontWeight: 800,
+        background: brand.background,
       }}
     >
       <div
         style={{
-          position: "relative",
+          width: 132,
+          height: 132,
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          lineHeight: 1,
-          textAlign: "center",
+          borderRadius: 66,
+          border: `3px solid ${brand.accent}`,
+          color: brand.textPrimary,
+          fontFamily: "Georgia, serif",
+          fontStyle: "italic",
+          fontSize: 58,
+          letterSpacing: -2,
         }}
       >
-        <div
-          style={{
-            fontSize: 72,
-            letterSpacing: -6,
-          }}
-        >
-          SP
-        </div>
-        <div
-          style={{
-            marginTop: 14,
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            color: "#c45f32",
-            fontSize: 20,
-            letterSpacing: 4,
-          }}
-        >
-          <span
-            style={{
-              width: 14,
-              height: 3,
-              background: "#c45f32",
-              display: "flex",
-            }}
-          />
-          JAVA
-        </div>
+        {siteConfig.brandMark}
       </div>
     </div>,
     size,
